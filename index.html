@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simuladores Imobiliários</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f5f5f7;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1d1d1f;
+      margin-bottom: 0.5rem;
+    }
+
+    header p {
+      font-size: 1rem;
+      color: #6e6e73;
+    }
+
+    .cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+      max-width: 960px;
+      width: 100%;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 18px;
+      padding: 2rem 2rem 1.75rem;
+      width: 280px;
+      text-decoration: none;
+      color: inherit;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.13);
+    }
+
+    .card-icon {
+      font-size: 2.2rem;
+      line-height: 1;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #1d1d1f;
+    }
+
+    .card-desc {
+      font-size: 0.875rem;
+      color: #6e6e73;
+      line-height: 1.5;
+      flex: 1;
+    }
+
+    .card-link {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #0071e3;
+      margin-top: 0.5rem;
+    }
+
+    .card.destaque {
+      border: 2px solid #0071e3;
+    }
+
+    footer {
+      margin-top: 3rem;
+      font-size: 0.8rem;
+      color: #aeaeb2;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Simuladores Imobiliários</h1>
+    <p>Compare e simule financiamento e consórcio imobiliário</p>
+  </header>
+
+  <div class="cards">
+
+    <a class="card destaque" href="comparativo.html">
+      <div class="card-icon">⚖️</div>
+      <div class="card-title">Comparativo</div>
+      <div class="card-desc">
+        Compare lado a lado o financiamento imobiliário e o consórcio. Veja custos reais, projeção nominal com TR e INCC, TIR e parecer final.
+      </div>
+      <div class="card-link">Abrir comparativo →</div>
+    </a>
+
+    <a class="card" href="simulador-credito-imobiliario.html">
+      <div class="card-icon">🏦</div>
+      <div class="card-title">Simulador de Financiamento</div>
+      <div class="card-desc">
+        Simule parcelas SAC ou PRICE, seguros MIP e DFI, tarifas e projeção nominal com correção pela TR.
+      </div>
+      <div class="card-link">Abrir simulador →</div>
+    </a>
+
+    <a class="card" href="simulador-consorcio.html">
+      <div class="card-icon">🤝</div>
+      <div class="card-title">Simulador de Consórcio</div>
+      <div class="card-desc">
+        Simule parcelas, lance embutido, lance livre, contemplação e projeção nominal com correção pelo INCC.
+      </div>
+      <div class="card-link">Abrir simulador →</div>
+    </a>
+
+  </div>
+
+  <footer>
+    Ferramenta educacional · Os valores são estimativas e não substituem análise profissional
+  </footer>
+
+</body>
+</html>

@@ -3,100 +3,135 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'unsafe-inline';">
   <title>Simuladores Imobiliários</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary:       #1A1F3A;
+      --primary-light: #E8ECF3;
+      --green:         #057a55;
+      --green-light:   #e3fcef;
+      --orange:        #d97706;
+      --orange-light:  #FDF0F4;
+      --blue:          #1a56db;
+      --blue-light:    #EBF5FF;
+      --gray-100:      #F5F5F6;
+      --gray-200:      #D7DBDF;
+      --gray-400:      #9ca3af;
+      --gray-600:      #4b5563;
+      --gray-700:      #374151;
+      --gray-900:      #111827;
+      --border:        #D7DBDF;
+    }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #f5f5f7;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--gray-100);
+      color: var(--gray-900);
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
+      padding: 0 0 64px;
     }
 
+    /* ── Header ── */
     header {
       text-align: center;
-      margin-bottom: 3rem;
+      background: var(--primary);
+      padding: 40px 20px 36px;
+      margin-bottom: 48px;
     }
-
     header h1 {
-      font-size: 2rem;
-      font-weight: 700;
-      color: #1d1d1f;
-      margin-bottom: 0.5rem;
+      font-size: 1.9rem; font-weight: 700;
+      color: #fff; letter-spacing: -0.02em;
     }
-
     header p {
-      font-size: 1rem;
-      color: #6e6e73;
+      margin-top: 8px;
+      color: rgba(255,255,255,0.70);
+      font-size: 0.95rem;
     }
 
-    .cards {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-      justify-content: center;
+    /* ── Grid ── */
+    .grid {
       max-width: 960px;
-      width: 100%;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
     }
 
+    /* ── Card ── */
     .card {
       background: #fff;
-      border-radius: 18px;
-      padding: 2rem 2rem 1.75rem;
-      width: 280px;
-      text-decoration: none;
-      color: inherit;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 28px 24px;
       display: flex;
       flex-direction: column;
-      gap: 0.75rem;
+      gap: 14px;
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow .15s, transform .15s;
     }
-
     .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 28px rgba(0,0,0,0.13);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.09);
+      transform: translateY(-2px);
+    }
+    .card.destaque {
+      border-left: 4px solid var(--blue);
     }
 
-    .card-icon {
-      font-size: 2.2rem;
-      line-height: 1;
+    .card-badge {
+      display: inline-block;
+      font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 4px;
+      align-self: flex-start;
     }
+    .card-badge.blue   { background: var(--blue-light);   color: var(--blue); }
+    .card-badge.green  { background: var(--green-light);  color: var(--green); }
+    .card-badge.orange { background: #FFF3E0;              color: var(--orange); }
+
+    .card-icon { font-size: 1.75rem; line-height: 1; }
 
     .card-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: #1d1d1f;
+      font-size: 1.05rem; font-weight: 700;
+      color: var(--gray-900); line-height: 1.3;
     }
 
     .card-desc {
-      font-size: 0.875rem;
-      color: #6e6e73;
-      line-height: 1.5;
+      font-size: 0.86rem;
+      color: var(--gray-600);
+      line-height: 1.65;
       flex: 1;
     }
 
-    .card-link {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: #0071e3;
-      margin-top: 0.5rem;
+    .card-cta {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.83rem; font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 4px;
+      align-self: flex-start;
+      transition: opacity .15s;
     }
+    .card-cta:hover { opacity: .85; }
+    .card-cta.blue   { background: var(--blue);   color: #fff; }
+    .card-cta.green  { background: var(--green);  color: #fff; }
+    .card-cta.orange { background: var(--orange); color: #fff; }
+    .card-cta::after { content: ' →'; }
 
-    .card.destaque {
-      border: 2px solid #0071e3;
-    }
-
+    /* ── Footer ── */
     footer {
-      margin-top: 3rem;
-      font-size: 0.8rem;
-      color: #aeaeb2;
       text-align: center;
+      margin-top: 52px;
+      font-size: 0.78rem;
+      color: var(--gray-400);
+      padding: 0 20px;
     }
   </style>
 </head>
@@ -104,42 +139,45 @@
 
   <header>
     <h1>Simuladores Imobiliários</h1>
-    <p>Compare e simule financiamento e consórcio imobiliário</p>
+    <p>Compare e simule as modalidades de aquisição de imóveis</p>
   </header>
 
-  <div class="cards">
+  <div class="grid">
 
     <a class="card destaque" href="comparativo.html">
+      <span class="card-badge blue">Recomendado</span>
       <div class="card-icon">⚖️</div>
-      <div class="card-title">Comparativo</div>
+      <div class="card-title">Comparativo Financiamento × Consórcio</div>
       <div class="card-desc">
-        Compare lado a lado o financiamento imobiliário e o consórcio. Veja custos reais, projeção nominal com TR e INCC, TIR e parecer final.
+        Compare lado a lado as duas modalidades. Analise parcelas, custo efetivo, TIR e projeções nominais com TR e INCC em um único painel.
       </div>
-      <div class="card-link">Abrir comparativo →</div>
+      <span class="card-cta blue">Abrir comparativo</span>
     </a>
 
     <a class="card" href="simulador-credito-imobiliario.html">
+      <span class="card-badge green">Financiamento</span>
       <div class="card-icon">🏦</div>
-      <div class="card-title">Simulador de Financiamento</div>
+      <div class="card-title">Simulador de Financiamento Imobiliário</div>
       <div class="card-desc">
-        Simule parcelas SAC ou PRICE, seguros MIP e DFI, tarifas e projeção nominal com correção pela TR.
+        Simule SAC ou Tabela Price com seguros MIP e DFI, tarifas administrativas e projeção nominal com correção pela TR.
       </div>
-      <div class="card-link">Abrir simulador →</div>
+      <span class="card-cta green">Simular financiamento</span>
     </a>
 
     <a class="card" href="simulador-consorcio.html">
+      <span class="card-badge orange">Consórcio</span>
       <div class="card-icon">🤝</div>
-      <div class="card-title">Simulador de Consórcio</div>
+      <div class="card-title">Simulador de Consórcio Imobiliário</div>
       <div class="card-desc">
-        Simule parcelas, lance embutido, lance livre, contemplação e projeção nominal com correção pelo INCC.
+        Simule com lance embutido, lance livre, redução de parcela e projeção nominal com correção pelo INCC. Veja o custo efetivo real.
       </div>
-      <div class="card-link">Abrir simulador →</div>
+      <span class="card-cta orange">Simular consórcio</span>
     </a>
 
   </div>
 
   <footer>
-    Ferramenta educacional · Os valores são estimativas e não substituem análise profissional
+    Ferramenta educacional · Os valores são estimativas e não constituem oferta ou assessoria financeira
   </footer>
 
 </body>

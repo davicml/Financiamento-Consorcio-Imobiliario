@@ -1,0 +1,1553 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'unsafe-inline';">
+  <title>Comparativo: Financiamento vs. Consórcio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blue: #1A1F3A;
+      --blue-light: #E8ECF3;
+      --primary: #9DB9FE;
+      --primary-light: #EEF3FF;
+      --green: #057a55;
+      --green-light: #e3fcef;
+      --red: #e02424;
+      --gray-50: #f9fafb;
+      --gray-100: #F5F5F6;
+      --gray-200: #D7DBDF;
+      --gray-400: #9ca3af;
+      --gray-600: #6b7280;
+      --gray-700: #374151;
+      --gray-900: #111827;
+      --radius: 4px;
+      --shadow: none;
+      --shadow-md: none;
+      --navy: #1A1F3A;
+      --navy-light: #E8ECF3;
+      --pink: #F9CBD9;
+      --border: #D7DBDF;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #F5F5F6;
+      color: var(--gray-900);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    header {
+      background: #1A1F3A;
+      border-bottom: none;
+      padding: 20px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: none;
+    }
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .header-titles h1 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .header-titles p {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.70);
+      margin-top: 2px;
+    }
+    .header-nav {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .header-nav a {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .header-nav a.nav-fin {
+      background: rgba(255,255,255,0.10);
+      color: rgba(255,255,255,0.85);
+      border: 1px solid rgba(255,255,255,0.25);
+    }
+    .header-nav a.nav-fin:hover { background: rgba(255,255,255,0.18); color: #fff; }
+    .header-nav a.nav-cons {
+      background: rgba(255,255,255,0.10);
+      color: rgba(255,255,255,0.85);
+      border: 1px solid rgba(255,255,255,0.25);
+    }
+    .header-nav a.nav-cons:hover { background: rgba(255,255,255,0.18); color: #fff; }
+
+    /* Layout */
+    .layout {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .forms-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 760px) {
+      .forms-row { grid-template-columns: 1fr; }
+      .header-inner { flex-direction: column; align-items: flex-start; }
+    }
+
+    /* Card base */
+    .card {
+      background: #fff;
+      border-radius: 4px;
+      border: 1px solid #D7DBDF;
+      padding: 20px 22px;
+      box-shadow: none;
+    }
+
+    .fin-card { border-top: 3px solid #1A1F3A; }
+    .cons-card { border-top: 3px solid #9DB9FE; }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-title .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .dot-blue { background: #1A1F3A; }
+    .dot-purple { background: #9DB9FE; }
+
+    /* Form fields */
+    .form-group {
+      margin-bottom: 14px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--gray-700);
+      margin-bottom: 5px;
+    }
+    .form-group .hint {
+      font-size: 0.72rem;
+      color: var(--gray-400);
+      margin-top: 3px;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 8px 11px;
+      border: 1.5px solid #D7DBDF;
+      border-radius: 4px;
+      font-size: 0.88rem;
+      color: var(--gray-900);
+      background: #fff;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      outline: none;
+      font-family: inherit;
+    }
+    input[type="text"]:focus,
+    input[type="number"]:focus {
+      border-color: #1A1F3A;
+      box-shadow: 0 0 0 3px rgba(26,31,58,0.10);
+    }
+    .cons-card input[type="text"]:focus,
+    .cons-card input[type="number"]:focus {
+      border-color: #9DB9FE;
+      box-shadow: 0 0 0 3px rgba(157,185,254,0.20);
+    }
+
+    input[inputmode="numeric"] { text-align: right; }
+
+    /* Slider row */
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 6px;
+    }
+    input[type="range"] {
+      flex: 1;
+      -webkit-appearance: none;
+      height: 4px;
+      border-radius: 99px;
+      background: var(--gray-200);
+      outline: none;
+      cursor: pointer;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--blue);
+      cursor: pointer;
+      border: 2px solid #fff;
+      box-shadow: 0 1px 3px rgba(0,0,0,.2);
+    }
+    .cons-card input[type="range"]::-webkit-slider-thumb {
+      background: var(--primary);
+    }
+    .slider-display {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--blue);
+      min-width: 72px;
+      text-align: right;
+    }
+    .cons-card .slider-display { color: var(--primary); }
+
+    /* Toggle pill (radio) */
+    .toggle-group {
+      display: flex;
+      background: var(--gray-100);
+      border-radius: 4px;
+      padding: 3px;
+      gap: 2px;
+    }
+    .toggle-group label {
+      flex: 1;
+      text-align: center;
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--gray-600);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      margin-bottom: 0;
+    }
+    .toggle-group input[type="radio"] { display: none; }
+    .toggle-group input[type="radio"]:checked + label {
+      background: #fff;
+      color: #1A1F3A;
+      box-shadow: none;
+    }
+    .toggle-group-cons input[type="radio"]:checked + label {
+      color: #1A1F3A;
+    }
+
+    /* Sync note */
+    .sync-note {
+      font-size: 0.75rem;
+      color: var(--gray-400);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 4px;
+    }
+
+    /* Read-only display */
+    .readonly-display {
+      width: 100%;
+      padding: 8px 11px;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 4px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--gray-700);
+      background: var(--gray-50);
+      text-align: right;
+    }
+
+    /* Colapsável */
+    .details-toggle {
+      cursor: pointer;
+      color: var(--blue);
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 10px;
+      user-select: none;
+    }
+    .details-toggle:hover { text-decoration: underline; }
+    .details-body { display: none; }
+
+    /* Compare card */
+    .compare-card { border-top: 3px solid var(--gray-400); }
+    .compare-card .card-title { color: var(--gray-900); }
+
+    /* Tabela comparativa */
+    .cmp-row {
+      display: grid;
+      grid-template-columns: 2fr 1.5fr 1.5fr;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--gray-100);
+      align-items: center;
+    }
+    .cmp-row:last-child { border-bottom: none; }
+    .cmp-header {
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--gray-200);
+    }
+    .cmp-label {
+      font-size: 0.82rem;
+      color: var(--gray-600);
+      padding-right: 8px;
+    }
+    .cmp-val {
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-align: right;
+      padding: 5px 10px;
+      border-radius: 4px;
+    }
+    .cmp-val.winner { background: var(--green-light); color: var(--green); }
+    .cmp-val.loser  { background: #fef2f2; color: var(--red); }
+    .cmp-val.neutral { color: var(--gray-700); }
+
+    /* Access chip */
+    .access-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+    .access-chip.immediate { background: var(--green-light); color: var(--green); }
+    .access-chip.deferred  { background: #fef3c7; color: #92400e; }
+
+    /* Economy banner */
+    .economy-banner {
+      margin-top: 16px;
+      padding: 12px 16px;
+      background: var(--green-light);
+      border-radius: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.875rem;
+    }
+
+    /* Verdict */
+    .verdict-card {
+      margin-top: 16px;
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      border: 2px solid transparent;
+    }
+    .verdict-card.fin-wins  { background: #EBF0FA; border-color: #1A1F3A; }
+    .verdict-card.cons-wins { background: #EBF0FA; border-color: #1A1F3A; }
+    .verdict-card.tie       { background: var(--gray-50); border-color: var(--gray-200); }
+    .verdict-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    /* Placeholder */
+    .placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding: 48px 24px;
+      color: var(--gray-400);
+      text-align: center;
+    }
+    .placeholder p {
+      font-size: 0.9rem;
+    }
+
+    /* Input prefix/suffix wrapper */
+    .input-addon {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .input-addon input {
+      padding-right: 11px;
+    }
+
+    /* Two-col grid for small inputs */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    hr.divider {
+      border: none;
+      border-top: 1px solid var(--gray-100);
+      margin: 12px 0;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-titles">
+      <h1>Comparativo: Financiamento vs. Consórcio</h1>
+      <p>Preencha os parâmetros de cada modalidade e veja o comparativo lado a lado</p>
+    </div>
+    <nav class="header-nav" aria-label="Outros simuladores">
+      <a href="simulador-credito-imobiliario.html" class="nav-fin">Simulador de Financiamento</a>
+      <a href="simulador-consorcio.html" class="nav-cons">Simulador de Consórcio</a>
+    </nav>
+  </div>
+</header>
+
+<main class="layout">
+
+  <!-- FORMS ROW -->
+  <div class="forms-row">
+
+    <!-- CARD FINANCIAMENTO -->
+    <div class="card fin-card">
+      <div class="card-title">
+        <span class="dot dot-blue"></span>
+        Financiamento Imobiliário
+      </div>
+
+      <!-- Valor do Imóvel (compartilhado) -->
+      <div class="form-group">
+        <label for="fin_valorImovel">Valor do Imóvel (R$)</label>
+        <input type="text" id="fin_valorImovel" inputmode="numeric" value="500.000" autocomplete="off">
+        <div class="sync-note">⇄ valor sincronizado com o consórcio</div>
+      </div>
+
+      <!-- Prazo -->
+      <div class="form-group">
+        <label for="fin_prazo">Prazo (meses)</label>
+        <input type="number" id="fin_prazo" min="12" max="420" step="1" value="240">
+        <div class="slider-row">
+          <input type="range" id="fin_prazoSlider" min="12" max="420" step="1" value="240">
+          <span class="slider-display" id="fin_prazoDisplay">240 meses</span>
+        </div>
+      </div>
+
+      <!-- Modo entrada -->
+      <div class="form-group">
+        <label>Informar como</label>
+        <div class="toggle-group">
+          <input type="radio" name="fin_modoEntrada" id="fin_modoEntrada_e" value="entrada" checked>
+          <label for="fin_modoEntrada_e">Entrada</label>
+          <input type="radio" name="fin_modoEntrada" id="fin_modoEntrada_f" value="financiado">
+          <label for="fin_modoEntrada_f">Valor Financiado</label>
+        </div>
+      </div>
+
+      <!-- Campo entrada -->
+      <div id="fin_campoEntrada" class="form-group">
+        <label for="fin_valorEntrada">Valor da Entrada (R$)</label>
+        <input type="text" id="fin_valorEntrada" inputmode="numeric" value="100.000" autocomplete="off">
+        <div class="hint">mín. 20% do valor do imóvel</div>
+      </div>
+
+      <!-- Campo financiado (oculto por default) -->
+      <div id="fin_campoFinanciado" class="form-group" style="display:none">
+        <label for="fin_valorFinanciado">Valor Financiado (R$)</label>
+        <input type="text" id="fin_valorFinanciado" inputmode="numeric" value="400.000" autocomplete="off">
+        <div class="hint">máx. 80% do valor do imóvel</div>
+      </div>
+
+      <!-- Taxa de Juros -->
+      <div class="form-group">
+        <label for="fin_taxaAnual">Taxa de Juros (% a.a.)</label>
+        <input type="number" id="fin_taxaAnual" min="0.1" max="30" step="0.1" value="10">
+        <div class="slider-row">
+          <input type="range" id="fin_taxaSlider" min="0.1" max="30" step="0.1" value="10">
+          <span class="slider-display" id="fin_taxaDisplay">10% a.a.</span>
+        </div>
+      </div>
+
+      <!-- Tabela SAC / PRICE -->
+      <div class="form-group">
+        <label>Sistema de Amortização</label>
+        <div class="toggle-group">
+          <input type="radio" name="fin_tabela" id="fin_tabela_sac" value="SAC" checked>
+          <label for="fin_tabela_sac">SAC</label>
+          <input type="radio" name="fin_tabela" id="fin_tabela_price" value="PRICE">
+          <label for="fin_tabela_price">PRICE (Tabela Price)</label>
+        </div>
+      </div>
+
+      <!-- TR estimada -->
+      <div class="form-group">
+        <label for="fin_trEstimada">TR Média Estimada (%)
+          <span style="font-size:0.75rem;color:var(--gray-400)"> média anual 20 anos: 1,1%</span>
+        </label>
+        <div style="display:flex;align-items:center;gap:6px">
+          <input type="number" id="fin_trEstimada" min="0" max="15" step="0.01"
+                 value="1.10" style="flex:1">
+          <span style="font-size:0.85rem;color:var(--gray-600)">% a.a.</span>
+        </div>
+      </div>
+
+      <!-- Colapsável Seguros & Tarifas -->
+      <hr class="divider">
+      <div id="fin_detailsToggle" class="details-toggle" role="button" tabindex="0" aria-expanded="false">
+        <span id="fin_detailsArrow">▶</span> Seguros &amp; Tarifas (opcional)
+      </div>
+      <div id="fin_detailsBody" class="details-body">
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="fin_mipAnual">MIP (% a.a.)</label>
+            <input type="number" id="fin_mipAnual" min="0" step="0.001" value="0.36">
+          </div>
+          <div class="form-group">
+            <label for="fin_dfiAnual">DFI (% a.a.)</label>
+            <input type="number" id="fin_dfiAnual" min="0" step="0.001" value="0.025">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="fin_tarifaMensal">Tarifa Administrativa (R$/mês)</label>
+          <input type="text" id="fin_tarifaMensal" inputmode="numeric" value="25" autocomplete="off">
+        </div>
+      </div>
+    </div><!-- /fin-card -->
+
+    <!-- CARD CONSÓRCIO -->
+    <div class="card cons-card">
+      <div class="card-title">
+        <span class="dot dot-purple"></span>
+        Consórcio Imobiliário
+      </div>
+
+      <!-- Carta (read-only, sincronizada) -->
+      <div class="form-group">
+        <label>Valor da Carta (R$)</label>
+        <div class="readonly-display" id="cons_cartaDisplay">500.000</div>
+        <div class="sync-note" id="cons_cartaSyncNote">⇄ sincronizado com o valor do imóvel</div>
+      </div>
+
+      <!-- Prazo -->
+      <div class="form-group">
+        <label for="cons_prazo">Prazo do Consórcio (meses)</label>
+        <input type="number" id="cons_prazo" min="12" max="240" step="1" value="180">
+        <div class="slider-row">
+          <input type="range" id="cons_prazoSlider" min="12" max="240" step="1" value="180">
+          <span class="slider-display" id="cons_prazoDisplay">180 meses</span>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <!-- Taxa Admin -->
+        <div class="form-group">
+          <label for="cons_taxaAdmin">Taxa Adm. (%)</label>
+          <input type="number" id="cons_taxaAdmin" min="0" max="25" step="0.5" value="15">
+        </div>
+        <!-- Fundo de Reserva -->
+        <div class="form-group">
+          <label for="cons_fundoReserva">Fundo de Reserva (%)</label>
+          <input type="number" id="cons_fundoReserva" min="0" max="10" step="0.5" value="2">
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <!-- Taxa de Adesão -->
+        <div class="form-group">
+          <label for="cons_taxaAdesao">Taxa de Adesão (%)</label>
+          <input type="number" id="cons_taxaAdesao" min="0" max="10" step="0.1" value="1">
+        </div>
+        <!-- Mês de Contemplação -->
+        <div class="form-group">
+          <label for="cons_mesContemplacao">Mês de Contemplação</label>
+          <input type="number" id="cons_mesContemplacao" min="1" value="36">
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <!-- Lance Embutido -->
+        <div class="form-group">
+          <label for="cons_lanceEmbutido">Lance Embutido (%)</label>
+          <input type="number" id="cons_lanceEmbutido" min="0" max="50" step="0.5" value="25">
+        </div>
+        <!-- Redução da Parcela -->
+        <div class="form-group">
+          <label for="cons_reducaoParcela">Redução da Parcela (%)</label>
+          <input type="number" id="cons_reducaoParcela" min="0" max="80" step="0.5" value="0">
+        </div>
+      </div>
+
+      <!-- Lance Livre -->
+      <div class="form-group">
+        <label for="cons_lanceLivre">Lance Livre (R$)</label>
+        <input type="text" id="cons_lanceLivre" inputmode="numeric" value="0" autocomplete="off">
+      </div>
+
+      <!-- Seguro Pós-Contemplação -->
+      <div class="form-group">
+        <label for="cons_seguroPos">Seguro Pós-Contemplação (R$/mês)</label>
+        <input type="text" id="cons_seguroPos" inputmode="numeric" value="0" autocomplete="off">
+      </div>
+
+      <!-- INCC estimado -->
+      <div class="form-group">
+        <label for="cons_inccEstimado">INCC Médio Estimado (%)
+          <span style="font-size:0.72rem;color:var(--gray-400);font-weight:400"> média anual 20 anos: 6,89%</span>
+        </label>
+        <input type="number" id="cons_inccEstimado" min="0" max="30" step="0.01"
+               value="6.89" autocomplete="off">
+      </div>
+    </div><!-- /cons-card -->
+
+  </div><!-- /forms-row -->
+
+  <!-- COMPARE CARD -->
+  <div class="card compare-card">
+    <div class="card-title">
+      <span>⚖️</span>
+      Comparativo
+    </div>
+
+    <!-- Placeholder -->
+    <div id="cmpPlaceholder" class="placeholder">
+      <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3v18M3 9l9-6 9 6M3 15l9 6 9-6"/>
+        <line x1="5" y1="9" x2="5" y2="19"/>
+        <line x1="19" y1="9" x2="19" y2="19"/>
+        <path d="M2 19h4M18 19h4"/>
+      </svg>
+      <p>Preencha os parâmetros acima para ver o comparativo</p>
+    </div>
+
+    <!-- Resultados -->
+    <div id="cmpResults" style="display:none">
+      <!-- Cabeçalho -->
+      <div class="cmp-row cmp-header">
+        <div></div>
+        <div style="text-align:right;color:var(--blue);font-weight:700;padding:0 10px">Financiamento</div>
+        <div style="text-align:right;color:var(--primary);font-weight:700;padding:0 10px">Consórcio</div>
+      </div>
+
+      <!-- Linhas -->
+      <div class="cmp-row">
+        <div class="cmp-label">Total desembolsado</div>
+        <div class="cmp-val" id="r_finTotal"></div>
+        <div class="cmp-val" id="r_consTotal"></div>
+      </div>
+      <div class="cmp-row">
+        <div class="cmp-label">Custo efetivo (R$)</div>
+        <div class="cmp-val" id="r_finCustoR"></div>
+        <div class="cmp-val" id="r_consCustoR"></div>
+      </div>
+      <div class="cmp-row">
+        <div class="cmp-label">Custo efetivo (%)</div>
+        <div class="cmp-val" id="r_finCustoPct"></div>
+        <div class="cmp-val" id="r_consCustoPct"></div>
+      </div>
+      <div class="cmp-row">
+        <div class="cmp-label">Parcela inicial</div>
+        <div class="cmp-val" id="r_finFirst"></div>
+        <div class="cmp-val" id="r_consFirst"></div>
+      </div>
+      <div class="cmp-row">
+        <div class="cmp-label">Parcela final</div>
+        <div class="cmp-val" id="r_finLast"></div>
+        <div class="cmp-val" id="r_consLast"></div>
+      </div>
+      <div class="cmp-row">
+        <div class="cmp-label">Acesso ao imóvel</div>
+        <div id="r_finAcesso" style="padding-left:10px"></div>
+        <div id="r_consAcesso" style="padding-left:10px"></div>
+      </div>
+      <div class="cmp-row">
+        <div class="cmp-label">
+          Valor líquido recebido
+          <span style="font-size:0.72rem;color:var(--gray-400)"> (crédito líquido do produto)</span>
+        </div>
+        <div class="cmp-val neutral" id="r_finRecebido"></div>
+        <div class="cmp-val neutral" id="r_consRecebido"></div>
+      </div>
+      <div class="cmp-row">
+        <div class="cmp-label">
+          Valor lance livre
+          <span style="font-size:0.72rem;color:var(--gray-400)"> (de recursos próprios)</span>
+        </div>
+        <div class="cmp-val neutral">—</div>
+        <div class="cmp-val neutral" id="r_consLanceLivre"></div>
+      </div>
+      <div class="cmp-row">
+        <div class="cmp-label">
+          Valor disponível recursos próprios
+        </div>
+        <div class="cmp-val neutral" id="r_finRecursosProprios"></div>
+        <div class="cmp-val neutral" id="r_consRecursosProprios"></div>
+      </div>
+      <div class="cmp-row">
+        <div class="cmp-label">
+          Valor total disponível para o imóvel
+          <span style="font-size:0.72rem;color:var(--gray-400)"> (informativo)</span>
+        </div>
+        <div class="cmp-val neutral" id="r_finTotalImovel"></div>
+        <div class="cmp-val neutral" id="r_consTotalImovel"></div>
+      </div>
+
+      <!-- Projeção após correção (TR fin. + INCC cons.) -->
+      <div class="cmp-row" style="margin-top:6px;border-top:1px solid var(--gray-200);padding-top:6px">
+        <div class="cmp-label" style="font-weight:600;color:var(--gray-700)">Projeção após correção</div>
+        <div class="cmp-val neutral" id="r_finTRRate"></div>
+        <div class="cmp-val neutral" id="r_consInccRate"></div>
+      </div>
+      <div class="cmp-row">
+        <div class="cmp-label">Parcela inicial (nominal)</div>
+        <div class="cmp-val neutral" id="r_finNomFirst"></div>
+        <div class="cmp-val neutral" id="r_consAnteNom"></div>
+      </div>
+      <div class="cmp-row">
+        <div class="cmp-label">Parcela final (nominal)</div>
+        <div class="cmp-val neutral" id="r_finNomLast"></div>
+        <div class="cmp-val neutral" id="r_consPosNom"></div>
+      </div>
+      <div class="cmp-row">
+        <div class="cmp-label">Total desembolsado (nominal)</div>
+        <div class="cmp-val" id="r_finNomTotal"></div>
+        <div class="cmp-val" id="r_consTotalNom"></div>
+      </div>
+      <div class="cmp-row">
+        <div class="cmp-label">Custo efetivo total — TIR (a.a.)</div>
+        <div class="cmp-val" id="r_finTIR"></div>
+        <div class="cmp-val" id="r_consTIR"></div>
+      </div>
+      <div class="cmp-row">
+        <div class="cmp-label">Carta recebida (nominal)</div>
+        <div class="cmp-val neutral">—</div>
+        <div class="cmp-val neutral" id="r_consCartaNom"></div>
+      </div>
+
+      <!-- Economy banner -->
+      <div class="economy-banner" id="economyBanner">
+        <span id="economyText"></span>
+        <strong id="economyVal"></strong>
+      </div>
+
+      <!-- Verdict -->
+      <div class="verdict-card" id="verdictCard">
+        <div class="verdict-title" id="verdictTitle"></div>
+        <div id="verdictBody" style="font-size:0.875rem;color:var(--gray-700);line-height:1.6"></div>
+      </div>
+    </div><!-- /cmpResults -->
+  </div><!-- /compare-card -->
+
+</main>
+
+<script>
+  // ─── TR histórica (BACEN) ────────────────────────────────────────────────
+  var TR_ANUAL_CMP = {
+    1995:31.62, 1996:9.55, 1997:9.78, 1998:7.79, 1999:5.72,
+    2000:2.09,  2001:2.28, 2002:2.80, 2003:4.64, 2004:1.81,
+    2005:2.83,  2006:2.03, 2007:1.44, 2008:1.63, 2009:0.71,
+    2010:0.68,  2011:1.21, 2012:0.30, 2013:0.19, 2014:0.87,
+    2015:1.82,  2016:2.00, 2017:0.46, 2018:0.00, 2019:0.00,
+    2020:0.00,  2021:0.02, 2022:1.89, 2023:2.11, 2024:2.06
+  };
+  var TR_ANOS_CMP = Object.keys(TR_ANUAL_CMP).map(Number).sort(function(a,b){return b-a;});
+
+  function trMedioCmp(anos) {
+    var slice = TR_ANOS_CMP.slice(0, Math.max(1, Math.min(TR_ANOS_CMP.length, anos)))
+                           .map(function(a){return TR_ANUAL_CMP[a];});
+    return slice.reduce(function(s,v){return s+v;}, 0) / slice.length;
+  }
+
+  function autoFillTRCmp(n) {
+    var el = document.getElementById('fin_trEstimada');
+    if (!el || el.dataset.auto !== 'true') return;
+    var anos = Math.max(1, Math.round(n / 12));
+    el.value = trMedioCmp(anos).toFixed(2);
+  }
+
+  // ─── TIR (IRR) — varredura + bissecção ──────────────────────────────────
+  // Encontra a PRIMEIRA mudança de sinal positiva (raiz economicamente relevante).
+  // Necessário porque o fluxo do consórcio tem dois cruzamentos de zero:
+  //   negativo → positivo (no mês k, recebimento do imóvel) → negativo (parcelas pós).
+  // A varredura captura a raiz de menor taxa, que representa o custo efetivo real.
+  // Retorna taxa efetiva anual em %.
+  function calcIRR(cf) {
+    function npv(r) {
+      var s = 0, fac = 1;
+      for (var t = 0; t < cf.length; t++, fac *= (1 + r)) s += cf[t] / fac;
+      return s;
+    }
+    // Varre de 0 a 50%/mês em 400 passos (0,125%/mês por passo)
+    var STEPS = 400, HI_M = 0.5;
+    var step = HI_M / STEPS;
+    var rPrev = 0, nPrev = npv(0);
+    if (!isFinite(nPrev)) return NaN;
+    for (var i = 1; i <= STEPS; i++) {
+      var rCur = step * i;
+      var nCur = npv(rCur);
+      if (!isFinite(nCur)) break;
+      if (nPrev * nCur < 0) {
+        // Primeiro cruzamento encontrado — bissecção de precisão
+        var lo = rPrev, hi = rCur;
+        for (var j = 0; j < 150; j++) {
+          var mid = (lo + hi) / 2;
+          if (npv(lo) * npv(mid) <= 0) hi = mid; else lo = mid;
+        }
+        return (Math.pow(1 + (lo + hi) / 2, 12) - 1) * 100;
+      }
+      rPrev = rCur;
+      nPrev = nCur;
+    }
+    return NaN; // sem raiz no intervalo
+  }
+
+  // TR aplicada mensalmente sobre o saldo devedor antes do cálculo dos juros
+  function calcNominalTRCmp(loan, i, n, mipM, dfiM, tarifa, tr_anual, tipo) {
+    var tr_m = Math.pow(1 + tr_anual / 100, 1/12) - 1;
+    var saldo = loan;
+    var totalNominal = 0, firstParcela = 0, lastParcela = 0;
+    var cf = new Array(n + 1);
+    cf[0] = loan; // capital recebido (positivo)
+
+    for (var m = 1; m <= n; m++) {
+      saldo *= (1 + tr_m);
+      var juros = saldo * i;
+      var mip   = saldo * mipM;
+      var dfi   = loan  * dfiM;
+      var amort;
+      if (tipo === 'SAC') {
+        amort = saldo / (n - m + 1);
+      } else {
+        var remaining = n - m + 1;
+        var base = i > 0
+          ? saldo * i / (1 - Math.pow(1 + i, -remaining))
+          : saldo / remaining;
+        amort = base - juros;
+      }
+      var parcela = amort + juros + mip + dfi + tarifa;
+      cf[m] = -parcela; // pagamentos mensais (negativos)
+      if (m === 1) firstParcela = parcela;
+      if (m === n) lastParcela  = parcela;
+      totalNominal += parcela;
+      saldo = Math.max(saldo - amort, 0);
+    }
+    var tirAnual = calcIRR(cf);
+    return { firstParcela: firstParcela, lastParcela: lastParcela,
+             totalNominal: totalNominal, tirAnual: tirAnual };
+  }
+
+  // ─── BLOCO 1 — Utilities ────────────────────────────────────────────────
+  function fmt(v) {
+    return v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2 });
+  }
+  function fmtPct(v, dec) {
+    dec = dec !== undefined ? dec : 2;
+    return v.toLocaleString('pt-BR', { minimumFractionDigits: dec, maximumFractionDigits: dec }) + '%';
+  }
+  function fmtInput(str) {
+    var digits = String(str).replace(/\D/g, '');
+    if (!digits) return '';
+    return parseInt(digits, 10).toLocaleString('pt-BR');
+  }
+  function safeNum(el) {
+    var raw = el.type === 'text'
+      ? el.value.replace(/\./g, '').replace(',', '.')
+      : el.value;
+    var v = parseFloat(raw);
+    return isFinite(v) ? v : NaN;
+  }
+  function monthlyRate(annualPct) {
+    return Math.pow(1 + annualPct / 100, 1 / 12) - 1;
+  }
+
+  // ─── BLOCO 2 — Engines ──────────────────────────────────────────────────
+  function calcSAC(loan, i, n, mipM, dfiM, imovel, tarifa) {
+    var amort         = loan / n;
+    var firstAmort    = amort;
+    var firstInterest = loan * i;
+    var firstMIP      = loan * mipM;
+    var firstDFI      = loan * dfiM;
+    var firstInst     = firstAmort + firstInterest + firstMIP + firstDFI + tarifa;
+
+    var lastBalance   = amort;
+    var lastAmort     = amort;
+    var lastInterest  = lastBalance * i;
+    var lastMIP       = lastBalance * mipM;
+    var lastDFI       = loan * dfiM;
+    var lastInst      = lastAmort + lastInterest + lastMIP + lastDFI + tarifa;
+
+    var sumSaldos     = amort * n * (n + 1) / 2;
+    var totalInt      = i    * sumSaldos;
+    var totalMIP      = mipM * sumSaldos;
+    var totalDFI      = dfiM * loan * n;
+    var totalTarifas  = tarifa * n;
+    var totalPaid     = loan + totalInt + totalMIP + totalDFI + totalTarifas;
+
+    return { firstInst: firstInst, lastInst: lastInst, totalPaid: totalPaid,
+             totalInt: totalInt, totalMIP: totalMIP, totalDFI: totalDFI, totalTarifas: totalTarifas };
+  }
+
+  function calcPRICE(loan, i, n, mipM, dfiM, imovel, tarifa) {
+    var factor      = Math.pow(1 + i, n);
+    var pmt         = loan * (i * factor) / (factor - 1);
+
+    var firstInterest = loan * i;
+    var firstMIP      = loan * mipM;
+    var firstDFI      = loan * dfiM;
+    var firstInst     = pmt + firstMIP + firstDFI + tarifa;
+
+    var lastBalance   = pmt / (1 + i);
+    var lastMIP       = lastBalance * mipM;
+    var lastDFI       = loan * dfiM;
+    var lastInst      = pmt + lastMIP + lastDFI + tarifa;
+
+    var totalPaid0    = pmt * n;
+    var totalInt      = totalPaid0 - loan;
+    var totalMIP      = mipM * (totalInt / i);
+    var totalDFI      = dfiM * loan * n;
+    var totalTarifas  = tarifa * n;
+    var totalPaid     = loan + totalInt + totalMIP + totalDFI + totalTarifas;
+
+    return { firstInst: firstInst, lastInst: lastInst, totalPaid: totalPaid,
+             totalInt: totalInt, totalMIP: totalMIP, totalDFI: totalDFI, totalTarifas: totalTarifas };
+  }
+
+  // ─── INCC histórico (INCC-M) ────────────────────────────────────────────
+  var INCC_ANUAL = {
+    2005:6.85, 2006:5.05, 2007:6.03, 2008:11.97, 2009:3.21,
+    2010:7.57, 2011:7.58, 2012:7.26,  2013:8.07, 2014:6.74,
+    2015:7.22, 2016:6.34, 2017:4.03,  2018:3.97, 2019:4.13,
+    2020:8.68, 2021:14.03, 2022:9.41, 2023:3.34, 2024:6.33
+  };
+  var INCC_ANOS = Object.keys(INCC_ANUAL).map(Number).sort(function(a,b){ return b-a; });
+
+  function inccMedio(anos) {
+    var slice = INCC_ANOS.slice(0, Math.max(1, anos)).map(function(a){ return INCC_ANUAL[a]; });
+    return slice.reduce(function(s,v){ return s+v; }, 0) / slice.length;
+  }
+
+  function autoFillIncc(n) {
+    var el = document.getElementById('cons_inccEstimado');
+    if (!el || el.dataset.auto !== 'true') return;
+    var anos = Math.max(1, Math.round(n / 12));
+    el.value = inccMedio(anos).toFixed(2);
+  }
+
+  function calcConsorcio(p) {
+    var valorImovel    = p.carta;
+    var n              = p.n;
+    var k              = p.k;
+    var taxaAdmin      = p.taxaAdmin;
+    var fundoReserva   = p.fundoReserva;
+    var taxaAdesao     = p.taxaAdesao;
+    var lanceEmbutido  = p.lanceEmbutido;
+    var reducaoParcela = p.reducaoParcela;
+    var lanceLivre     = p.lanceLivre;
+    var seguroPos      = p.seguroPos;
+
+    // Carta bruta: o usuário informa o valor do imóvel; a carta precisa ser maior
+    // para cobrir o lance embutido e ainda entregar o valor do imóvel ao consorciado
+    var carta = lanceEmbutido > 0
+      ? valorImovel / (1 - lanceEmbutido / 100)
+      : valorImovel;
+
+    var totalAdminPct   = taxaAdmin + fundoReserva;
+    var parcelaAnteFull = carta * (1 + totalAdminPct / 100) / n;
+    var parcelaAnteRed  = parcelaAnteFull * (1 - reducaoParcela / 100);
+
+    var fatorLance       = 1 - lanceEmbutido / 100;
+    var mesesPos         = n - k;
+    var lanceEmbutidoVal = carta * lanceEmbutido / 100;
+    var lanceTotal       = lanceEmbutidoVal + lanceLivre;
+    var cartaFinal       = carta * fatorLance;
+
+    var saldoDevedor = Math.max(
+      parcelaAnteFull * n - parcelaAnteRed * k - lanceEmbutidoVal - lanceLivre, 0
+    );
+
+    var parcelaPosBase = mesesPos > 0 ? saldoDevedor / mesesPos : 0;
+    var parcelaPosTot  = parcelaPosBase + seguroPos;
+
+    var taxaAdesaoVal = carta * taxaAdesao / 100;
+    var totalAdmin    = carta * taxaAdmin / 100;
+    var totalFundo    = carta * fundoReserva / 100;
+    var totalSeguros  = seguroPos * mesesPos;
+
+    var totalParcelas     = parcelaAnteRed * k + parcelaPosTot * mesesPos;
+    var totalDesembolsado = totalParcelas + taxaAdesaoVal + lanceLivre;
+
+    var saldoInicio      = parcelaAnteFull * n + taxaAdesaoVal;
+    var custoEfetivo     = totalAdmin + totalFundo + taxaAdesaoVal + totalSeguros;
+    var cartaLiquida     = Math.max(cartaFinal - lanceLivre, 1);
+    var custoEfetivoPct  = (custoEfetivo / cartaLiquida) * 100;
+
+    // ── Projeção INCC ─────────────────────────────────────────────────────
+    var incc = isFinite(p.incc) ? p.incc : 0;
+    var totalNominalPre = 0;
+    for (var m = 1; m <= k; m++) {
+      totalNominalPre += parcelaAnteRed * Math.pow(1 + incc / 100, Math.floor((m - 1) / 12));
+    }
+    var totalNominalPos = 0;
+    for (var m2 = k + 1; m2 <= n; m2++) {
+      totalNominalPos += parcelaPosTot * Math.pow(1 + incc / 100, Math.floor((m2 - 1) / 12));
+    }
+    var totalDesembolsadoNominal = totalNominalPre + totalNominalPos + taxaAdesaoVal + lanceLivre;
+    var parcelaAnteNominal = parcelaAnteRed * Math.pow(1 + incc / 100, Math.floor((k - 1) / 12));
+    var parcalaPosNominal  = parcelaPosTot  * Math.pow(1 + incc / 100, Math.floor((n - 1) / 12));
+
+    // ── TIR do consórcio (fluxo nominal com INCC) ──────────────────────────
+    // Benefício posicionado no mês REAL da contemplação (mês k):
+    //   CF[0]  = −taxaAdesão (saída no início)
+    //   CF[k]  += +(cartaFinal_ajustada − lanceLivre)  carta reajustada pelo INCC até o mês k
+    //   CF[m]  −= parcela nominal (inclui mês k no loop pré-contemplação)
+    // A carta é reajustada pelo mesmo fator INCC das parcelas: (1+INCC)^floor((k-1)/12)
+    // Lance livre permanece nominal (valor fixo combinado com o grupo).
+    var inccFatorK   = k > 0 ? Math.pow(1 + incc / 100, Math.floor((k - 1) / 12)) : 1;
+    var cartaAjustK  = cartaFinal * inccFatorK;
+    var cfCons = new Array(n + 1).fill(0);
+    cfCons[0] = -taxaAdesaoVal;
+    if (k >= 0 && k <= n) cfCons[k] += cartaAjustK - lanceLivre;
+    for (var mi = 1; mi <= k; mi++) {
+      cfCons[mi] -= parcelaAnteRed * Math.pow(1 + incc / 100, Math.floor((mi - 1) / 12));
+    }
+    for (var mi2 = k + 1; mi2 <= n; mi2++) {
+      cfCons[mi2] -= parcelaPosTot * Math.pow(1 + incc / 100, Math.floor((mi2 - 1) / 12));
+    }
+    var tirAnualCons = calcIRR(cfCons);
+
+    return {
+      parcelaAnteRed: parcelaAnteRed,
+      parcelaPosTot: parcelaPosTot,
+      cartaFinal: cartaFinal,
+      saldoDevedor: saldoDevedor,
+      saldoInicio: saldoInicio,
+      totalDesembolsado: totalDesembolsado,
+      custoEfetivo: custoEfetivo,
+      custoEfetivoPct: custoEfetivoPct,
+      totalAdmin: totalAdmin,
+      totalFundo: totalFundo,
+      taxaAdesaoVal: taxaAdesaoVal,
+      totalSeguros: totalSeguros,
+      lanceTotal: lanceTotal,
+      lanceEmbutidoVal: lanceEmbutidoVal,
+      totalDesembolsadoNominal: totalDesembolsadoNominal,
+      parcelaAnteNominal: parcelaAnteNominal,
+      parcalaPosNominal: parcalaPosNominal,
+      incc: incc,
+      tirAnualCons: tirAnualCons
+    };
+  }
+
+  // ─── BLOCO 3 — Wrappers normalizados ────────────────────────────────────
+  function calcFin(p) {
+    var imovel = p.imovel, entrada = p.entrada, taxa = p.taxa;
+    var prazo  = p.prazo,  mip = p.mip, dfi = p.dfi, tarifa = p.tarifa, tabela = p.tabela;
+    var loan   = imovel - entrada;
+    var i      = monthlyRate(taxa);
+    var mipM   = mip / 100 / 12;
+    var dfiM   = dfi / 100 / 12;
+    var res    = tabela === 'SAC'
+      ? calcSAC(loan, i, prazo, mipM, dfiM, imovel, tarifa)
+      : calcPRICE(loan, i, prazo, mipM, dfiM, imovel, tarifa);
+    var custoR   = res.totalPaid - loan;
+    var custoPct = (custoR / loan) * 100;
+    return {
+      totalPaid:         res.totalPaid,
+      custoR:            custoR,
+      custoPct:          custoPct,
+      firstInst:         res.firstInst,
+      lastInst:          res.lastInst,
+      valorRecebido:     loan,
+      recursosProprios:  imovel - loan,
+      valorTotalImovel:  imovel,
+      acessoMes:         0
+    };
+  }
+
+  function calcCons(p) {
+    var r = calcConsorcio(p);
+    // custoR = taxas do serviço (admin + fundo + adesão + seguros)
+    // Base do % = cartaFinal — invariante ao lance livre, pois o lance livre é
+    // apenas antecipação de pagamento e não altera o custo intrínseco do produto
+    var custoRCons   = r.custoEfetivo;
+    var custoPctCons = (custoRCons / Math.max(r.cartaFinal, 1)) * 100;
+    return {
+      totalPaid:               r.totalDesembolsado,
+      custoR:                  custoRCons,
+      custoPct:                custoPctCons,
+      firstInst:               r.parcelaAnteRed,
+      lastInst:                r.parcelaPosTot,
+      valorRecebido:           Math.max(r.cartaFinal - p.lanceLivre, 0),
+      recursosProprios:        p.lanceLivre,
+      valorTotalImovel:        r.cartaFinal,
+      acessoMes:               p.k,
+      totalNominal:            r.totalDesembolsadoNominal,
+      parcelaAnteNominal:      r.parcelaAnteNominal,
+      parcalaPosNominal:       r.parcalaPosNominal,
+      incc:                    r.incc,
+      tirNominal:              r.tirAnualCons
+    };
+  }
+
+  // ─── BLOCO 4 — Leitura/validação ────────────────────────────────────────
+  function readFin() {
+    var imovel = safeNum(document.getElementById('fin_valorImovel'));
+    if (!isFinite(imovel) || imovel < 10000) return null;
+
+    var modo = document.querySelector('input[name="fin_modoEntrada"]:checked').value;
+    var entrada;
+    if (modo === 'entrada') {
+      entrada = safeNum(document.getElementById('fin_valorEntrada'));
+      if (!isFinite(entrada) || entrada < imovel * 0.20 || entrada > imovel * 0.99) return null;
+    } else {
+      var fin = safeNum(document.getElementById('fin_valorFinanciado'));
+      if (!isFinite(fin) || fin < imovel * 0.01 || fin > imovel * 0.80) return null;
+      entrada = imovel - fin;
+    }
+
+    var taxa   = safeNum(document.getElementById('fin_taxaAnual'));
+    var prazo  = parseInt(document.getElementById('fin_prazo').value, 10);
+    var mip    = safeNum(document.getElementById('fin_mipAnual'));
+    var dfi    = safeNum(document.getElementById('fin_dfiAnual'));
+    var tarifa = safeNum(document.getElementById('fin_tarifaMensal'));
+    var tabela = document.querySelector('input[name="fin_tabela"]:checked').value;
+
+    if (!isFinite(taxa)   || taxa < 0.1  || taxa > 30)    return null;
+    if (!isFinite(prazo)  || prazo < 12  || prazo > 420)   return null;
+    if (!isFinite(mip)    || mip < 0)                      return null;
+    if (!isFinite(dfi)    || dfi < 0)                      return null;
+    if (!isFinite(tarifa) || tarifa < 0)                   return null;
+
+    return { imovel: imovel, entrada: entrada, taxa: taxa, prazo: prazo,
+             mip: mip, dfi: dfi, tarifa: tarifa, tabela: tabela };
+  }
+
+  function readCons() {
+    // Carta sincronizada com o valor FINANCIADO (não o valor total do imóvel)
+    var imovel = safeNum(document.getElementById('fin_valorImovel'));
+    if (!isFinite(imovel) || imovel < 10000) return null;
+    var modoFin = document.querySelector('input[name="fin_modoEntrada"]:checked').value;
+    var entradaFin;
+    if (modoFin === 'entrada') {
+      entradaFin = safeNum(document.getElementById('fin_valorEntrada'));
+      if (!isFinite(entradaFin) || entradaFin < imovel * 0.20 || entradaFin > imovel * 0.99) return null;
+    } else {
+      var finVal = safeNum(document.getElementById('fin_valorFinanciado'));
+      if (!isFinite(finVal) || finVal < imovel * 0.01 || finVal > imovel * 0.80) return null;
+      entradaFin = imovel - finVal;
+    }
+    var n = parseInt(document.getElementById('cons_prazo').value, 10);
+    var k = parseInt(document.getElementById('cons_mesContemplacao').value, 10);
+    if (!isFinite(n) || n < 12  || n > 240) return null;
+    if (!isFinite(k) || k < 1   || k >= n)  return null;
+
+    var taxaAdmin      = safeNum(document.getElementById('cons_taxaAdmin'));
+    var fundoReserva   = safeNum(document.getElementById('cons_fundoReserva'));
+    var taxaAdesao     = safeNum(document.getElementById('cons_taxaAdesao'));
+    var lanceEmbutido  = safeNum(document.getElementById('cons_lanceEmbutido'));
+    var reducaoParcela = safeNum(document.getElementById('cons_reducaoParcela'));
+    var lanceLivre     = safeNum(document.getElementById('cons_lanceLivre'));
+    var seguroPos      = safeNum(document.getElementById('cons_seguroPos'));
+
+    // cartaFinal = loan + lanceLivre: garante poder de compra do mesmo imóvel
+    // pois o lance livre consome recursos próprios que complementariam a carta
+    var carta = (imovel - entradaFin) + (isFinite(lanceLivre) && lanceLivre > 0 ? lanceLivre : 0);
+    if (!isFinite(carta) || carta < 10000) return null;
+
+    var incc = safeNum(document.getElementById('cons_inccEstimado'));
+    if (!isFinite(incc) || incc < 0 || incc > 30) incc = 0;
+
+    var vals = [taxaAdmin, fundoReserva, taxaAdesao, lanceEmbutido, reducaoParcela, lanceLivre, seguroPos];
+    for (var idx = 0; idx < vals.length; idx++) {
+      if (!isFinite(vals[idx]) || vals[idx] < 0) return null;
+    }
+
+    return { carta: carta, n: n, k: k,
+             taxaAdmin: taxaAdmin, fundoReserva: fundoReserva, taxaAdesao: taxaAdesao,
+             lanceEmbutido: lanceEmbutido, reducaoParcela: reducaoParcela,
+             lanceLivre: lanceLivre, seguroPos: seguroPos, incc: incc };
+  }
+
+  // ─── BLOCO 5 — Comparativo e veredito ───────────────────────────────────
+  function calcVeredito(fin, cons) {
+    var scoreFin = 0, scoreCons = 0;
+    var razoesFin = [], razoesCons = [];
+
+    function compete(finVal, consVal, peso, labelFin, labelCons) {
+      var diff = Math.abs(finVal - consVal) / Math.max(Math.abs(finVal), Math.abs(consVal), 1);
+      if (diff < 0.02) return;
+      if (finVal < consVal) { scoreFin  += peso; razoesFin.push(labelFin); }
+      else                  { scoreCons += peso; razoesCons.push(labelCons); }
+    }
+
+    compete(fin.custoR,    cons.custoR,    3, 'menor custo efetivo', 'menor custo efetivo');
+    compete(fin.totalPaid, cons.totalPaid, 2, 'menor desembolso total', 'menor desembolso total');
+    compete(fin.firstInst, cons.firstInst, 2, 'parcela inicial menor', 'parcela inicial menor');
+    compete(fin.lastInst,  cons.lastInst,  1, 'parcela final menor', 'parcela final menor');
+
+    var pesoAcesso = cons.acessoMes > 12 ? 3 : 2;
+    if (cons.acessoMes > 0) {
+      scoreFin += pesoAcesso;
+      razoesFin.push(cons.acessoMes > 12
+        ? 'acesso imediato (consórcio exige ' + cons.acessoMes + ' meses de espera)'
+        : 'acesso imediato ao imóvel');
+    }
+
+    var vencedor = scoreFin > scoreCons ? 'fin' : scoreCons > scoreFin ? 'cons' : 'tie';
+    return { vencedor: vencedor, scoreFin: scoreFin, scoreCons: scoreCons,
+             razoesFin: razoesFin, razoesCons: razoesCons };
+  }
+
+  function renderComparativo(fin, cons, nomFin) {
+    document.getElementById('cmpPlaceholder').style.display = 'none';
+    document.getElementById('cmpResults').style.display     = 'block';
+
+    function setRow(idFin, idCons, valFin, valCons, fmtFn, lowerIsBetter) {
+      var elFin  = document.getElementById(idFin);
+      var elCons = document.getElementById(idCons);
+      elFin.textContent  = fmtFn(valFin);
+      elCons.textContent = fmtFn(valCons);
+      elFin.className  = 'cmp-val';
+      elCons.className = 'cmp-val';
+      var diff = Math.abs(valFin - valCons) / Math.max(Math.abs(valFin), Math.abs(valCons), 1);
+      if (diff >= 0.02) {
+        var finWins = lowerIsBetter ? valFin < valCons : valFin > valCons;
+        elFin.classList.add(finWins ? 'winner' : 'loser');
+        elCons.classList.add(finWins ? 'loser' : 'winner');
+      }
+    }
+
+    setRow('r_finTotal',    'r_consTotal',    fin.totalPaid, cons.totalPaid, fmt, true);
+    setRow('r_finCustoR',   'r_consCustoR',   fin.custoR,    cons.custoR,    fmt, true);
+    setRow('r_finCustoPct', 'r_consCustoPct', fin.custoPct,  cons.custoPct,
+      function(v) { return fmtPct(v, 2); }, true);
+    setRow('r_finFirst',    'r_consFirst',    fin.firstInst, cons.firstInst, fmt, true);
+    setRow('r_finLast',     'r_consLast',     fin.lastInst,  cons.lastInst,  fmt, true);
+
+    // Acesso ao imóvel
+    var elFinAcesso  = document.getElementById('r_finAcesso');
+    var elConsAcesso = document.getElementById('r_consAcesso');
+    elFinAcesso.innerHTML  = '<span class="access-chip immediate">Imediato</span>';
+    elConsAcesso.innerHTML = cons.acessoMes === 0
+      ? '<span class="access-chip immediate">Imediato</span>'
+      : '<span class="access-chip deferred">Mês ' + cons.acessoMes + '</span>';
+
+    // Valor líquido recebido (neutro)
+    document.getElementById('r_finRecebido').textContent  = fmt(fin.valorRecebido);
+    document.getElementById('r_consRecebido').textContent = fmt(cons.valorRecebido);
+
+    // Lance livre (de recursos próprios) — mostrado antes do saldo restante
+    document.getElementById('r_consLanceLivre').textContent = fmt(cons.recursosProprios);
+
+    // Valor disponível recursos próprios:
+    //   financiamento = entrada (inteira, sem dedução)
+    //   consórcio     = entrada − lance livre (saldo restante após o lance)
+    var recursosProprios = fin.recursosProprios;
+    document.getElementById('r_finRecursosProprios').textContent  = fmt(recursosProprios);
+    document.getElementById('r_consRecursosProprios').textContent = fmt(recursosProprios - cons.recursosProprios);
+
+    // Valor total disponível para o imóvel = crédito líquido + recursos próprios (neutro)
+    document.getElementById('r_finTotalImovel').textContent  = fmt(fin.valorRecebido  + recursosProprios);
+    document.getElementById('r_consTotalImovel').textContent = fmt(cons.valorRecebido + recursosProprios);
+
+    // ── Projeção nominal unificada ────────────────────────────────────────────
+    // Consórcio (INCC)
+    document.getElementById('r_consInccRate').textContent = 'INCC ' + fmtPct(cons.incc, 2) + ' a.a.';
+    document.getElementById('r_consAnteNom').textContent  = fmt(cons.parcelaAnteNominal);
+    document.getElementById('r_consPosNom').textContent   = fmt(cons.parcalaPosNominal);
+
+    // Financiamento (TR)
+    if (nomFin) {
+      document.getElementById('r_finTRRate').textContent   = 'TR ' + fmtPct(nomFin.trRate, 2) + ' a.a.';
+      document.getElementById('r_finNomFirst').textContent = fmt(nomFin.firstParcela);
+      document.getElementById('r_finNomLast').textContent  = fmt(nomFin.lastParcela);
+      // Total nominal com destaque vencedor
+      setRow('r_finNomTotal', 'r_consTotalNom', nomFin.totalNominal, cons.totalNominal, fmt, true);
+      // TIR nominal (menor é melhor)
+      var tirFin  = nomFin.tirAnual;
+      var tirCons = cons.tirNominal;
+      if (isFinite(tirFin) && isFinite(tirCons)) {
+        setRow('r_finTIR', 'r_consTIR', tirFin, tirCons,
+          function(v) { return fmtPct(v, 2) + ' a.a.'; }, true);
+      } else {
+        document.getElementById('r_finTIR').textContent  = isFinite(tirFin)  ? fmtPct(tirFin, 2)  + ' a.a.' : '—';
+        document.getElementById('r_consTIR').textContent = isFinite(tirCons) ? fmtPct(tirCons, 2) + ' a.a.' : '—';
+      }
+    } else {
+      document.getElementById('r_finTRRate').textContent   = '—';
+      document.getElementById('r_finNomFirst').textContent = '—';
+      document.getElementById('r_finNomLast').textContent  = '—';
+      document.getElementById('r_finNomTotal').textContent = '—';
+      document.getElementById('r_consTotalNom').textContent = fmt(cons.totalNominal);
+      // TIR só do consórcio (sem TR do fin.)
+      var tirConsOnly = cons.tirNominal;
+      document.getElementById('r_finTIR').textContent  = '—';
+      document.getElementById('r_consTIR').textContent = isFinite(tirConsOnly) ? fmtPct(tirConsOnly, 2) + ' a.a.' : '—';
+    }
+
+    // ── Carta recebida nominal (consórcio) ───────────────────────────────────
+    var kCons        = cons.acessoMes;
+    var anosINCC     = kCons > 0 ? Math.floor((kCons - 1) / 12) : 0;
+    var fatorINCC_k  = Math.pow(1 + cons.incc / 100, anosINCC);
+    var cartaNominal = cons.valorTotalImovel * fatorINCC_k;
+    var cartaNomEl   = document.getElementById('r_consCartaNom');
+    var nota = anosINCC === 0
+      ? '(sem reajuste — contemplação imediata)'
+      : anosINCC === 1
+        ? '1 reajuste anual de INCC até o mês ' + kCons
+        : anosINCC + ' reajustes anuais de INCC até o mês ' + kCons;
+    cartaNomEl.innerHTML = fmt(cartaNominal) +
+      '<div style="font-size:0.72rem;color:var(--gray-400);margin-top:2px;line-height:1.3">' + nota + '</div>';
+
+    // ── Economy banner — comparação nominal ──────────────────────────────────
+    var totalFinNom  = nomFin ? nomFin.totalNominal : fin.totalPaid;
+    var totalConsNom = cons.totalNominal;
+    var diffNom      = totalFinNom - totalConsNom;
+    var winnerNom    = diffNom > 0 ? 'Consórcio' : 'Financiamento';
+    var savingNom    = Math.abs(diffNom);
+    var savingPctNom = (savingNom / Math.max(totalFinNom, totalConsNom)) * 100;
+    var banner = document.getElementById('economyBanner');
+    banner.style.background = savingNom < totalFinNom * 0.01 ? 'var(--gray-100)' : 'var(--green-light)';
+    document.getElementById('economyText').textContent = winnerNom + ' custa menos no total nominal';
+    document.getElementById('economyVal').textContent  = fmt(savingNom) + ' (' + fmtPct(savingPctNom, 1) + ')';
+
+    // ── Veredito — baseado no resultado pós-correção (nominal) ───────────────
+    var v  = calcVeredito(fin, cons);
+    var vc = document.getElementById('verdictCard');
+
+    // Determinar vencedor pós-correção (nominal) quando disponível
+    var nomWinnerKey = nomFin ? (diffNom < 0 ? 'fin' : (diffNom > 0 ? 'cons' : 'tie')) : null;
+    var finalWinnerKey = nomWinnerKey !== null ? nomWinnerKey : v.vencedor;
+
+    vc.className = 'verdict-card ' + (finalWinnerKey === 'fin' ? 'fin-wins' : finalWinnerKey === 'cons' ? 'cons-wins' : 'tie');
+
+    var titleMap = {
+      fin:  '🏦 Financiamento é mais barato após correção',
+      cons: '🤝 Consórcio é mais barato após correção',
+      tie:  '⚖️ Empate técnico após correção'
+    };
+    var titleMapBase = {
+      fin:  '🏦 Financiamento é mais barato',
+      cons: '🤝 Consórcio é mais barato',
+      tie:  '⚖️ Empate técnico'
+    };
+    document.getElementById('verdictTitle').textContent = nomFin ? titleMap[finalWinnerKey] : titleMapBase[v.vencedor];
+
+    // Texto resumido focado no resultado pós-correção
+    var bodyText = '';
+    if (nomFin) {
+      var nomWinnerLabel = diffNom < 0 ? 'financiamento' : 'consórcio';
+      var nomLoserLabel  = diffNom < 0 ? 'consórcio' : 'financiamento';
+      if (diffNom !== 0) {
+        bodyText = 'Com TR de ' + fmtPct(nomFin.trRate, 2) + ' a.a. e INCC de ' + fmtPct(cons.incc, 2) +
+          ' a.a., o ' + nomWinnerLabel + ' totaliza ' + fmt(savingNom) + ' (' + fmtPct(savingPctNom, 1) +
+          ') a menos que o ' + nomLoserLabel + '.';
+      } else {
+        bodyText = 'Com as correções aplicadas, os dois cenários resultam em custo total equivalente.';
+      }
+      // Alerta se veredito base e nominal divergem
+      if (v.vencedor !== 'tie' && nomWinnerKey !== null && v.vencedor !== nomWinnerKey) {
+        bodyText += ' ⚠️ A correção monetária inverte a vantagem em relação aos valores base — considere cenários alternativos de TR e INCC.';
+      }
+    } else {
+      // Sem TR informada — usar comparação base
+      var custoDiff = Math.abs(fin.custoR - cons.custoR);
+      if (v.vencedor === 'fin') {
+        bodyText = 'O financiamento apresenta custo efetivo ' + fmt(custoDiff) + ' menor que o consórcio.';
+      } else if (v.vencedor === 'cons') {
+        bodyText = 'O consórcio apresenta custo efetivo ' + fmt(custoDiff) + ' menor que o financiamento.';
+      } else {
+        bodyText = 'Os dois cenários têm custo efetivo similar.';
+      }
+    }
+    if (cons.acessoMes > 0) {
+      bodyText += ' Atenção: no consórcio, o imóvel só estará disponível no mês ' + cons.acessoMes + '.';
+    }
+
+    document.getElementById('verdictBody').textContent = bodyText;
+  }
+
+  function render() {
+    var pFin  = readFin();
+    var pCons = readCons();
+
+    // Sincroniza exibição da carta (bruta) com o valor FINANCIADO + lance embutido
+    var cartaDisplay  = document.getElementById('cons_cartaDisplay');
+    var cartaSyncNote = document.getElementById('cons_cartaSyncNote');
+    if (cartaDisplay) {
+      var loanSync          = pFin ? (pFin.imovel - pFin.entrada) : 0;
+      var lanceEmbutidoSync = safeNum(document.getElementById('cons_lanceEmbutido'));
+      var lanceLivreSync    = safeNum(document.getElementById('cons_lanceLivre'));
+      lanceLivreSync = (isFinite(lanceLivreSync) && lanceLivreSync > 0) ? lanceLivreSync : 0;
+      var cartaFinalSync    = loanSync + lanceLivreSync;
+      if (isFinite(cartaFinalSync) && cartaFinalSync > 0 && isFinite(lanceEmbutidoSync) && lanceEmbutidoSync > 0) {
+        var cartaBrutaSync     = cartaFinalSync / (1 - lanceEmbutidoSync / 100);
+        var lanceEmbutidoReais = cartaBrutaSync * lanceEmbutidoSync / 100;
+        var noteParts = ['⇄ valor financiado ' + fmt(loanSync)];
+        if (lanceLivreSync > 0) noteParts.push('+ lance livre ' + fmt(lanceLivreSync));
+        noteParts.push('+ lance embutido ' + fmt(lanceEmbutidoReais) + ' (' + lanceEmbutidoSync + '%)');
+        cartaDisplay.textContent  = fmt(cartaBrutaSync);
+        cartaSyncNote.textContent = noteParts.join(' ');
+      } else if (isFinite(cartaFinalSync) && cartaFinalSync > 0) {
+        cartaDisplay.textContent  = fmt(cartaFinalSync);
+        cartaSyncNote.textContent = '⇄ sincronizado com o valor financiado';
+      } else {
+        cartaDisplay.textContent  = '—';
+        cartaSyncNote.textContent = '⇄ sincronizado com o valor financiado';
+      }
+    }
+
+    if (!pFin || !pCons) {
+      document.getElementById('cmpPlaceholder').style.display = '';
+      document.getElementById('cmpResults').style.display     = 'none';
+      return;
+    }
+    var fin  = calcFin(pFin);
+    var cons = calcCons(pCons);
+
+    // ── Projeção nominal TR (financiamento) — calculada antes do render ──────
+    var nomFin = null;
+    var tr_fin = safeNum(document.getElementById('fin_trEstimada'));
+    if (isFinite(tr_fin) && tr_fin >= 0) {
+      var loan_tr = pFin.imovel - pFin.entrada;
+      var i_tr    = Math.pow(1 + pFin.taxa / 100, 1/12) - 1;
+      var mipM_tr = pFin.mip / 100 / 12;
+      var dfiM_tr = pFin.dfi / 100 / 12;
+      var nom = calcNominalTRCmp(loan_tr, i_tr, pFin.prazo, mipM_tr, dfiM_tr,
+                                  pFin.tarifa, tr_fin, pFin.tabela);
+      nomFin = { firstParcela: nom.firstParcela, lastParcela: nom.lastParcela,
+                 totalNominal: nom.totalNominal, trRate: tr_fin,
+                 tirAnual: nom.tirAnual };
+    }
+
+    renderComparativo(fin, cons, nomFin);
+  }
+
+  // ─── BLOCO 6 — Event listeners e init ───────────────────────────────────
+
+  // Monetary inputs (type="text")
+  ['fin_valorImovel','fin_valorEntrada','fin_valorFinanciado','fin_tarifaMensal',
+   'cons_lanceLivre','cons_seguroPos'].forEach(function(id) {
+    document.getElementById(id).addEventListener('input', function() {
+      var f = fmtInput(this.value);
+      this.value = f;
+      this.setSelectionRange(f.length, f.length);
+      render();
+    });
+  });
+
+  // Number inputs (type="number")
+  ['fin_taxaAnual','fin_prazo','fin_mipAnual','fin_dfiAnual',
+   'cons_taxaAdmin','cons_fundoReserva','cons_taxaAdesao',
+   'cons_lanceEmbutido','cons_reducaoParcela','cons_mesContemplacao',
+   'cons_prazo'].forEach(function(id) {
+    document.getElementById(id).addEventListener('input', render);
+  });
+
+  // Slider: Taxa anual
+  var finTaxaSlider  = document.getElementById('fin_taxaSlider');
+  var finTaxaInput   = document.getElementById('fin_taxaAnual');
+  var finTaxaDisplay = document.getElementById('fin_taxaDisplay');
+  finTaxaSlider.addEventListener('input', function() {
+    finTaxaInput.value         = finTaxaSlider.value;
+    finTaxaDisplay.textContent = finTaxaSlider.value + '% a.a.';
+    render();
+  });
+  finTaxaInput.addEventListener('input', function() {
+    finTaxaSlider.value        = finTaxaInput.value;
+    finTaxaDisplay.textContent = finTaxaInput.value + '% a.a.';
+  });
+
+  // Slider: Prazo financiamento
+  var finPrazoSlider  = document.getElementById('fin_prazoSlider');
+  var finPrazoInput   = document.getElementById('fin_prazo');
+  var finPrazoDisplay = document.getElementById('fin_prazoDisplay');
+  finPrazoSlider.addEventListener('input', function() {
+    var n = parseInt(finPrazoSlider.value, 10);
+    finPrazoInput.value         = n;
+    finPrazoDisplay.textContent = n + ' meses';
+    render();
+  });
+  finPrazoInput.addEventListener('input', function() {
+    var n = parseInt(finPrazoInput.value, 10);
+    finPrazoSlider.value        = n;
+    finPrazoDisplay.textContent = n + ' meses';
+  });
+
+  // Slider: Prazo consórcio
+  var consPrazoSlider  = document.getElementById('cons_prazoSlider');
+  var consPrazoInput   = document.getElementById('cons_prazo');
+  var consPrazoDisplay = document.getElementById('cons_prazoDisplay');
+  consPrazoSlider.addEventListener('input', function() {
+    var n = parseInt(consPrazoSlider.value, 10);
+    consPrazoInput.value         = n;
+    consPrazoDisplay.textContent = n + ' meses';
+    render();
+  });
+  consPrazoInput.addEventListener('input', function() {
+    var v = parseInt(consPrazoInput.value, 10);
+    if (v >= 12 && v <= 240) {
+      consPrazoSlider.value        = v;
+      consPrazoDisplay.textContent = v + ' meses';
+    }
+  });
+
+  document.getElementById('cons_inccEstimado').addEventListener('input', render);
+
+  // Toggle modo entrada / financiado
+  document.querySelectorAll('input[name="fin_modoEntrada"]').forEach(function(radio) {
+    radio.addEventListener('change', function() {
+      var showEntrada = this.value === 'entrada';
+      document.getElementById('fin_campoEntrada').style.display    = showEntrada ? '' : 'none';
+      document.getElementById('fin_campoFinanciado').style.display = showEntrada ? 'none' : '';
+      render();
+    });
+  });
+
+  // Toggle SAC / PRICE
+  document.querySelectorAll('input[name="fin_tabela"]').forEach(function(r) {
+    r.addEventListener('change', render);
+  });
+
+  // Colapsável seguros & tarifas
+  var detailsToggle = document.getElementById('fin_detailsToggle');
+  var detailsBody   = document.getElementById('fin_detailsBody');
+  var detailsArrow  = document.getElementById('fin_detailsArrow');
+  detailsToggle.addEventListener('click', function() {
+    var open = detailsBody.style.display === 'block';
+    detailsBody.style.display   = open ? 'none' : 'block';
+    detailsArrow.textContent    = open ? '▶' : '▼';
+    detailsToggle.setAttribute('aria-expanded', String(!open));
+  });
+  detailsToggle.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); detailsToggle.click(); }
+  });
+
+  document.getElementById('fin_trEstimada').addEventListener('input', render);
+
+  // Init
+  render();
+</script>
+</body>
+</html>

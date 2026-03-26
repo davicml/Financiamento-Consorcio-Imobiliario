@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'unsafe-inline';">
+  <title>Simulador de Consórcio Imobiliário</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #1A1F3A;
+      --primary-light: #E8ECF3;
+      --primary-dark: #0D1224;
+      --orange: #d97706;
+      --orange-light: #FDF0F4;
+      --green: #057a55;
+      --green-light: #e3fcef;
+      --gray-50: #f9fafb;
+      --gray-100: #F5F5F6;
+      --gray-200: #D7DBDF;
+      --gray-400: #9ca3af;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-900: #111827;
+      --red: #e02424;
+      --radius: 4px;
+      --shadow: none;
+      --shadow-md: none;
+      --navy: #1A1F3A;
+      --navy-light: #E8ECF3;
+      --pink: #F9CBD9;
+      --border: #D7DBDF;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #F5F5F6;
+      color: var(--gray-900);
+      min-height: 100vh;
+      padding: 0 0 48px;
+    }
+
+    /* ── Header ── */
+    header {
+      text-align: center;
+      margin-bottom: 32px;
+      background: #1A1F3A;
+      padding: 28px 20px 24px;
+    }
+    header h1 {
+      font-size: 1.75rem; font-weight: 700;
+      color: #fff; letter-spacing: -0.02em;
+    }
+    header p { margin-top: 6px; color: rgba(255,255,255,0.70); font-size: 0.95rem; }
+
+    /* ── Nav link ── */
+    .nav-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 12px;
+      font-size: 0.82rem; font-weight: 500;
+      color: rgba(255,255,255,0.80);
+      text-decoration: none;
+      padding: 5px 12px;
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 4px;
+      background: rgba(255,255,255,0.08);
+      transition: background .15s, color .15s;
+    }
+    .nav-link:hover { background: rgba(255,255,255,0.16); color: #fff; }
+    .nav-link::before { content: '←'; font-size: .9em; }
+
+    /* ── Layout ── */
+    .container {
+      max-width: 960px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 24px; align-items: start;
+    }
+    @media (max-width: 700px) { .container { grid-template-columns: 1fr; } }
+
+    /* ── Card ── */
+    .card {
+      background: #fff; border-radius: 4px;
+      border: 1px solid #D7DBDF;
+      box-shadow: none; padding: 28px;
+    }
+    .card h2 {
+      font-size: 1rem; font-weight: 600; color: var(--gray-700);
+      margin-bottom: 20px; padding-bottom: 12px;
+      border-bottom: 1px solid var(--gray-200);
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+
+    /* ── Section separator inside form ── */
+    .section-sep {
+      margin: 20px 0 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--gray-200);
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--gray-400);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    /* ── Form fields ── */
+    .field { margin-bottom: 20px; }
+
+    label {
+      display: block; font-size: 0.875rem; font-weight: 500;
+      color: var(--gray-700); margin-bottom: 6px;
+    }
+    label span.hint { font-weight: 400; color: var(--gray-400); margin-left: 4px; font-size: .8em; }
+
+    .input-wrap {
+      display: flex; align-items: center;
+      border: 1.5px solid var(--gray-200); border-radius: 4px;
+      overflow: hidden; background: #fff;
+      transition: border-color .15s;
+    }
+    .input-wrap:focus-within { border-color: var(--primary); }
+
+    .input-wrap .prefix,
+    .input-wrap .suffix {
+      padding: 0 10px; font-size: 0.875rem;
+      color: var(--gray-400); background: var(--gray-50);
+      border-right: 1px solid var(--gray-200);
+      height: 40px; display: flex; align-items: center;
+      user-select: none;
+    }
+    .input-wrap .suffix { border-right: none; border-left: 1px solid var(--gray-200); }
+
+    .input-wrap input {
+      flex: 1; border: none; outline: none;
+      padding: 0 10px; height: 40px;
+      font-size: 0.9rem; color: var(--gray-900);
+      background: transparent; min-width: 0;
+    }
+    .input-wrap input.has-suffix { padding-right: 4px; }
+
+    /* Row of two fields side-by-side */
+    .field-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+      margin-bottom: 20px;
+    }
+    .field-row .field { margin-bottom: 0; }
+
+    /* ── Slider ── */
+    .slider-wrap { display: flex; align-items: center; gap: 10px; }
+    .slider-wrap input[type="range"] {
+      flex: 1; accent-color: var(--primary); cursor: pointer;
+    }
+    .slider-val {
+      font-size: 0.82rem; font-weight: 600;
+      color: var(--primary); min-width: 72px; text-align: right;
+    }
+
+    /* ── Toggle ── */
+    .toggle-group {
+      display: inline-flex; border: 1.5px solid var(--gray-200);
+      border-radius: 4px; overflow: hidden; width: 100%;
+    }
+    .toggle-group input[type="radio"] { display: none; }
+    .toggle-group label {
+      flex: 1; margin: 0; text-align: center;
+      padding: 8px 4px; font-size: 0.82rem; font-weight: 500;
+      color: var(--gray-600); cursor: pointer;
+      background: var(--gray-50);
+      border-right: 1px solid var(--gray-200);
+      transition: background .15s, color .15s;
+    }
+    .toggle-group label:last-of-type { border-right: none; }
+    .toggle-group input[type="radio"]:checked + label {
+      background: #E8ECF3;
+      color: #1A1F3A;
+      font-weight: 600;
+    }
+
+    /* ── Errors ── */
+    .field-error {
+      display: none; margin-top: 5px;
+      font-size: 0.78rem; color: var(--red);
+    }
+    .field-error.visible { display: block; }
+
+    /* ── Buttons ── */
+    .btn-calc {
+      width: 100%; padding: 12px;
+      background: #F9CBD9; color: #000000;
+      border: 1px solid #f6b8cb; border-radius: 4px;
+      font-size: 0.95rem; font-weight: 600;
+      cursor: pointer; transition: background .15s;
+      margin-top: 4px;
+      font-family: inherit;
+    }
+    .btn-calc:hover { background: #f6b8cb; }
+
+    /* ── Results ── */
+    .results { display: none; }
+
+    /* Badge */
+    .badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 4px;
+      text-transform: uppercase; letter-spacing: .05em;
+      margin-bottom: 16px;
+      background: #E8ECF3; color: #1A1F3A;
+    }
+
+    /* Highlights grid */
+    .highlights {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 12px; margin-bottom: 16px;
+    }
+    .highlight {
+      background: #FDF0F4;
+      border: 1px solid #F9CBD9;
+      border-radius: 4px; padding: 14px;
+    }
+    .highlight.after {
+      background: var(--green-light);
+      border-color: #a7f3d0;
+    }
+    .highlight .label {
+      font-size: 0.78rem; font-weight: 600;
+      color: #1A1F3A;
+      text-transform: uppercase; letter-spacing: .05em;
+      margin-bottom: 6px;
+    }
+    .highlight.after .label { color: var(--green); }
+    .highlight .value {
+      font-size: 1.35rem; font-weight: 700;
+      color: var(--gray-900); line-height: 1.2;
+    }
+    .highlight .sub {
+      font-size: 0.72rem; color: var(--gray-400); margin-top: 3px;
+    }
+    .highlight .sub-detail {
+      font-size: 0.72rem; color: var(--gray-600); margin-top: 5px;
+      line-height: 1.5;
+    }
+
+    /* Stats table */
+    .stats {
+      border-top: 1px solid var(--gray-200);
+      padding-top: 16px; margin-top: 4px;
+    }
+    .stat-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 7px 0; font-size: 0.875rem;
+    }
+    .stat-row:not(:last-child) { border-bottom: 1px solid var(--gray-100); }
+    .stat-row .stat-label { color: var(--gray-600); }
+    .stat-row .stat-value { font-weight: 600; color: var(--gray-900); }
+    .stat-row.total .stat-label { color: var(--gray-700); font-weight: 600; }
+    .stat-row.total .stat-value { color: var(--red); font-size: 0.95rem; }
+    .stat-row.highlight-row .stat-value { color: var(--primary); }
+
+    /* Progress bar */
+    .breakdown { margin-top: 14px; }
+    .breakdown-label {
+      display: flex; justify-content: space-between;
+      font-size: 0.78rem; color: var(--gray-600); margin-bottom: 5px;
+    }
+    .bar-track {
+      height: 8px; border-radius: 999px;
+      background: var(--gray-200); overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%; border-radius: 4px;
+      background: #1A1F3A;
+      transition: width .4s ease;
+    }
+
+    /* Info box */
+    .info-note {
+      margin-top: 14px; background: var(--gray-50);
+      border-radius: 4px; padding: 12px 14px;
+      font-size: 0.8rem; color: var(--gray-600);
+      border-left: 3px solid var(--gray-200);
+    }
+    .info-note strong { color: var(--gray-900); }
+
+    /* Placeholder */
+    .placeholder {
+      text-align: center; padding: 32px 16px;
+      color: var(--gray-400); font-size: 0.9rem;
+    }
+    .placeholder .icon { font-size: 2.4rem; margin-bottom: 10px; }
+
+    input[inputmode="numeric"] { text-align: right; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Simulador de Consórcio Imobiliário</h1>
+  <p>Calcule parcelas, lance e custo total do consórcio</p>
+  <a class="nav-link" href="comparativo.html">Comparativo</a>
+</header>
+
+<div class="container">
+
+  <!-- ── FORMULÁRIO ── -->
+  <div class="card">
+    <h2>Parâmetros</h2>
+
+    <!-- Carta de crédito -->
+    <div class="field">
+      <label for="carta">Valor do Imóvel</label>
+      <div class="input-wrap">
+        <span class="prefix">R$</span>
+        <input type="text" inputmode="numeric" id="carta"
+               data-min="10000" data-max="100000000" data-step="1000"
+               value="500.000" aria-label="Valor do imóvel a ser adquirido">
+      </div>
+      <div class="field-error" id="errCarta">Informe um valor válido (mínimo R$ 10.000)</div>
+    </div>
+
+    <!-- Quantidade de meses -->
+    <div class="field">
+      <label for="meses">Quantidade de Meses
+        <span class="hint">12 a 240</span>
+      </label>
+      <div class="slider-wrap">
+        <input type="range" id="mesesSlider" min="12" max="240" step="12" value="180"
+               aria-label="Prazo em meses">
+        <span class="slider-val" id="mesesDisplay">180 meses</span>
+      </div>
+      <div class="input-wrap" style="margin-top:8px">
+        <input type="number" id="meses" min="12" max="240" step="1" value="180"
+               class="has-suffix" aria-label="Prazo em meses">
+        <span class="suffix">meses</span>
+      </div>
+      <div class="field-error" id="errMeses">Prazo deve ser entre 12 e 240 meses</div>
+    </div>
+
+    <!-- INCC estimado -->
+    <div class="field">
+      <label for="inccEstimado">INCC Médio Estimado (%)
+        <span class="hint">média anual 20 anos: 6,89%</span>
+      </label>
+      <div class="input-wrap">
+        <input type="number" id="inccEstimado" min="0" max="30" step="0.01"
+               value="6.89" class="has-suffix"
+               aria-label="INCC médio estimado ao ano">
+        <span class="suffix">% a.a.</span>
+      </div>
+      <div class="field-error" id="errIncc">Entre 0% e 30%</div>
+    </div>
+
+    <div class="section-sep">Taxas e Encargos</div>
+
+    <!-- Taxa admin + Fundo de reserva -->
+    <div class="field-row">
+      <div class="field">
+        <label for="taxaAdmin">Taxa de Adm.
+          <span class="hint">% total</span>
+        </label>
+        <div class="input-wrap">
+          <input type="number" id="taxaAdmin" min="0" max="25" step="0.5"
+                 value="15" class="has-suffix" aria-label="Taxa de administração percentual total">
+          <span class="suffix">%</span>
+        </div>
+        <div class="field-error" id="errAdmin">Entre 0% e 25%</div>
+      </div>
+      <div class="field">
+        <label for="fundoReserva">Fundo de Reserva
+          <span class="hint">% total</span>
+        </label>
+        <div class="input-wrap">
+          <input type="number" id="fundoReserva" min="0" max="10" step="0.5"
+                 value="2" class="has-suffix" aria-label="Fundo de reserva percentual total">
+          <span class="suffix">%</span>
+        </div>
+        <div class="field-error" id="errFundo">Entre 0% e 10%</div>
+      </div>
+    </div>
+
+    <!-- Taxa de adesão -->
+    <div class="field">
+      <label for="taxaAdesao">Taxa de Adesão
+        <span class="hint">% sobre a carta, cobrada na 1ª parcela</span>
+      </label>
+      <div class="input-wrap">
+        <input type="number" id="taxaAdesao" min="0" max="10" step="0.1"
+               value="1" class="has-suffix" aria-label="Taxa de adesão percentual">
+        <span class="suffix">%</span>
+      </div>
+      <div class="field-error" id="errAdesao">Entre 0% e 10%</div>
+    </div>
+
+    <div class="section-sep">Contemplação e Lance</div>
+
+    <!-- Mês de contemplação -->
+    <div class="field">
+      <label for="mesContemplacao">Mês Previsto de Contemplação
+        <span class="hint">1 até n−1</span>
+      </label>
+      <div class="input-wrap">
+        <input type="number" id="mesContemplacao" min="1" max="239" step="1"
+               value="1" class="has-suffix" aria-label="Mês previsto de contemplação">
+        <span class="suffix">º mês</span>
+      </div>
+      <div class="field-error" id="errContemplacao">Deve ser entre 1 e n−1 meses</div>
+    </div>
+
+    <!-- Lance embutido + Redução de parcela -->
+    <div class="field-row">
+      <div class="field">
+        <label for="lanceEmbutido">Lance Embutido
+          <span class="hint">% máx.</span>
+        </label>
+        <div class="input-wrap">
+          <input type="number" id="lanceEmbutido" min="0" max="50" step="0.5"
+                 value="25" class="has-suffix" aria-label="Percentual máximo de lance embutido">
+          <span class="suffix">%</span>
+        </div>
+        <div class="field-error" id="errEmbutido">Entre 0% e 50%</div>
+      </div>
+      <div class="field">
+        <label for="reducaoParcela">Redução da Parcela
+          <span class="hint">% antes da contemplação</span>
+        </label>
+        <div class="input-wrap">
+          <input type="number" id="reducaoParcela" min="0" max="80" step="0.5"
+                 value="0" class="has-suffix" aria-label="Percentual de redução da parcela">
+          <span class="suffix">%</span>
+        </div>
+        <div class="field-error" id="errReducao">Entre 0% e 80%</div>
+      </div>
+    </div>
+
+    <!-- Lance livre -->
+    <div class="field">
+      <label for="lanceLivre">Valor do Lance Livre
+        <span class="hint">R$ em dinheiro</span>
+      </label>
+      <div class="input-wrap">
+        <span class="prefix">R$</span>
+        <input type="text" inputmode="numeric" id="lanceLivre"
+               data-min="0" data-max="100000000" data-step="1000"
+               value="0" aria-label="Valor do lance livre em reais">
+      </div>
+      <div class="field-error" id="errLanceLivre">Valor inválido</div>
+    </div>
+
+    <!-- Seguro após contemplação -->
+    <div class="field">
+      <label for="seguroPos">Seguro Mensal após Contemplação
+        <span class="hint">valor fixo R$/mês</span>
+      </label>
+      <div class="input-wrap">
+        <span class="prefix">R$</span>
+        <input type="text" inputmode="numeric" id="seguroPos"
+               data-min="0" data-max="10000" data-step="10"
+               value="0" aria-label="Valor do seguro mensal após contemplação">
+      </div>
+      <div class="field-error" id="errSeguro">Valor inválido</div>
+    </div>
+
+    <button class="btn-calc" onclick="render()">Calcular</button>
+  </div>
+
+  <!-- ── RESULTADO ── -->
+  <div class="card">
+    <h2>Resultado</h2>
+
+    <div id="placeholder" class="placeholder">
+      <div class="icon">🏠</div>
+      Preencha os parâmetros e clique em <strong>Calcular</strong>
+    </div>
+
+    <div id="results" class="results">
+      <span class="badge" id="badgeInfo">Contemplação no 1º mês</span>
+
+      <!-- Highlights: parcela antes / parcela depois -->
+      <div class="highlights">
+        <div class="highlight">
+          <div class="label">Parcela até Contemplação</div>
+          <div class="value" id="parcelaAnte">—</div>
+          <div class="sub">por mês (antes do lance)</div>
+          <div class="sub-detail" id="detalheAnte"></div>
+        </div>
+        <div class="highlight after">
+          <div class="label">Parcela após Contemplação</div>
+          <div class="value" id="parcelaPos">—</div>
+          <div class="sub">por mês (após lance)</div>
+          <div class="sub-detail" id="detalhePos"></div>
+        </div>
+      </div>
+
+      <!-- Barra: Amortização vs. Taxas -->
+      <div class="breakdown">
+        <div class="breakdown-label">
+          <span>Amortização vs. Encargos (parcela pré-contemplação)</span>
+          <span id="barLabel"></span>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill" id="barFill" style="width:0%"></div>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats" style="margin-top:16px">
+        <div class="stat-row highlight-row">
+          <span class="stat-label">Valor do imóvel</span>
+          <span class="stat-value" id="stCarta"></span>
+        </div>
+        <div class="stat-row highlight-row">
+          <span class="stat-label">Carta de crédito (bruta)</span>
+          <span class="stat-value" id="stCartaBruta"></span>
+        </div>
+        <div class="stat-row highlight-row">
+          <span class="stat-label">Saldo devedor (início do plano)</span>
+          <span class="stat-value" id="stSaldoInicio"></span>
+        </div>
+        <div class="stat-row highlight-row">
+          <span class="stat-label">Carta líquida recebida</span>
+          <span class="stat-value" id="stCartaFinal"></span>
+        </div>
+        <div class="stat-row highlight-row">
+          <span class="stat-label">Saldo devedor (pós contemplação)</span>
+          <span class="stat-value" id="stSaldo"></span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Prazo</span>
+          <span class="stat-value" id="stMeses"></span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Lance embutido</span>
+          <span class="stat-value" id="stLanceEmb"></span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Lance livre</span>
+          <span class="stat-value" id="stLanceLivre"></span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Lance total</span>
+          <span class="stat-value" id="stLanceTotal"></span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Total taxa de administração</span>
+          <span class="stat-value" id="stTaxaAdmin"></span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Total fundo de reserva</span>
+          <span class="stat-value" id="stFundo"></span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Taxa de adesão</span>
+          <span class="stat-value" id="stAdesao"></span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Total seguros</span>
+          <span class="stat-value" id="stSeguros"></span>
+        </div>
+        <div class="stat-row total">
+          <span class="stat-label">Total desembolsado (hoje)</span>
+          <span class="stat-value" id="stTotal"></span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Custo efetivo sobre a carta</span>
+          <span class="stat-value" id="stCusto"></span>
+        </div>
+        <div class="stat-row" id="inccRowTitle" style="margin-top:8px;border-top:1px solid var(--gray-200);padding-top:8px">
+          <span class="stat-label" style="font-weight:600;color:var(--gray-700)">Projeção com INCC</span>
+          <span class="stat-value" id="stInccRate"></span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Parcela pré (último mês, nominal)</span>
+          <span class="stat-value" id="stParcelaAnteNom"></span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Parcela pós (último mês, nominal)</span>
+          <span class="stat-value" id="stParcalaPosNom"></span>
+        </div>
+        <div class="stat-row total">
+          <span class="stat-label">Total desembolsado (nominal)</span>
+          <span class="stat-value" id="stTotalNom"></span>
+        </div>
+      </div>
+
+      <div class="info-note" id="infoNote"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ── Utilities ─────────────────────────────────────────────────────────────────
+
+  function fmt(v) {
+    return v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2 });
+  }
+
+  function fmtPct(v, dec) {
+    const d = dec ?? 2;
+    return v.toLocaleString('pt-BR', { minimumFractionDigits: d, maximumFractionDigits: d }) + '%';
+  }
+
+  // Formata string como inteiro com separador de milhar pt-BR (ex: "500000" → "500.000")
+  function fmtInput(str) {
+    const digits = String(str).replace(/\D/g, '');
+    if (!digits) return '';
+    return parseInt(digits, 10).toLocaleString('pt-BR');
+  }
+
+  function safeNum(el) {
+    // Campos type="text" usam ponto como separador de milhar → strippa antes de parsear.
+    // Campos type="number" usam ponto como separador decimal → mantém intacto.
+    const raw = el.type === 'text'
+      ? el.value.replace(/\./g, '').replace(',', '.')
+      : el.value;
+    const v = parseFloat(raw);
+    return isFinite(v) ? v : NaN;
+  }
+
+  // ── INCC histórico (INCC-M, fonte: dadosdemercado.com.br) ─────────────────────
+
+  const INCC_ANUAL = {
+    2005:6.85, 2006:5.05, 2007:6.03, 2008:11.97, 2009:3.21,
+    2010:7.57, 2011:7.58, 2012:7.26,  2013:8.07, 2014:6.74,
+    2015:7.22, 2016:6.34, 2017:4.03,  2018:3.97, 2019:4.13,
+    2020:8.68, 2021:14.03, 2022:9.41, 2023:3.34, 2024:6.33
+  };
+  // Anos em ordem decrescente (mais recente primeiro)
+  const INCC_ANOS = Object.keys(INCC_ANUAL).map(Number).sort((a, b) => b - a);
+
+  // Retorna a média dos últimos `anos` anos disponíveis (mínimo 1)
+  function inccMedio(anos) {
+    const slice = INCC_ANOS.slice(0, Math.max(1, anos)).map(a => INCC_ANUAL[a]);
+    return slice.reduce((s, v) => s + v, 0) / slice.length;
+  }
+
+  // ── Cálculo do Consórcio ───────────────────────────────────────────────────────
+  //
+  // Premissas:
+  //   - Taxa de admin e fundo de reserva: % TOTAL sobre a carta, rateados mensalmente.
+  //   - Taxa de adesão: % sobre a carta, cobrada uma vez (1ª parcela, não mensal).
+  //   - % Redução da parcela: aplica-se ANTES da contemplação (fase de espera).
+  //     Não é desconto — o valor não pago fica diferido e é redistribuído nas parcelas
+  //     pós-contemplação, mantendo o total da dívida constante.
+  //   - Lance embutido: reduz a carta recebida E as parcelas futuras proporcionalmente.
+  //   - Seguro pós-contemplação: valor fixo R$/mês cobrado a partir da contemplação.
+  //   - k = mês de contemplação (configurável pelo usuário).
+  //
+  // Fase 1 — meses 1 a k (antes da contemplação):
+  //   parcelaAnteFull = carta × (1 + taxaAdmin/100 + fundoReserva/100) / n
+  //   parcelaAnteRed  = parcelaAnteFull × (1 − reducaoParcela/100)   ← valor pago
+  //   totalDiferido   = parcelaAnteFull × (reducaoParcela/100) × k   ← acumulado
+  //
+  // Fase 2 — meses k+1 a n (após contemplação):
+  //   mesesPos       = n − k
+  //   parcelaPosBase = saldoDevedor / mesesPos
+  //   parcelaPosTot  = parcelaPosBase + seguroPos
+  //
+  // Carta de crédito efetiva:
+  //   cartaFinal = carta × (1 − lanceEmbutido/100)
+  //
+  // Saldo devedor — modelo de abatimento direto:
+  //   Cada pagamento reduz o saldo pelo valor exato pago (sem juros → sem distorção).
+  //   saldoDevedor = parcelaAnteFull×n − parcelaAnteRed×k − lanceEmbutidoVal − lanceLivre
+  //   Garante: totalDesembolsado − taxas = cartaFinal  (identidade contábil preservada)
+
+  function calcConsorcio({ carta: valorImovel, n, k, taxaAdmin, fundoReserva, taxaAdesao,
+                            lanceEmbutido, reducaoParcela, lanceLivre, seguroPos, incc }) {
+
+    // ── Carta bruta — o usuário informa o valor do imóvel; a carta precisa ser maior
+    //    para cobrir o lance embutido e ainda entregar o valor do imóvel ao consorciado
+    const carta = lanceEmbutido > 0
+      ? valorImovel / (1 - lanceEmbutido / 100)
+      : valorImovel;
+
+    // ── Parcela cheia base (sem adesão, sem seguro) ───────────────────────────
+    const parcelaAnteFull = carta * (1 + taxaAdmin / 100 + fundoReserva / 100) / n;
+
+    // Detalhamento interno
+    const amortMensal = carta / n;
+    const adminMensal = carta * taxaAdmin    / 100 / n;
+    const fundoMensal = carta * fundoReserva / 100 / n;
+
+    // ── Fase 1: parcela reduzida paga antes da contemplação ───────────────────
+    const parcelaAnteRed = parcelaAnteFull * (1 - reducaoParcela / 100);
+    const totalDiferido  = parcelaAnteFull * (reducaoParcela / 100) * k;
+
+    // ── Taxa de adesão (uma vez, 1ª parcela) ──────────────────────────────────
+    const taxaAdesaoVal  = carta * taxaAdesao / 100;
+
+    // ── Lance ─────────────────────────────────────────────────────────────────
+    const lanceEmbutidoVal = carta * lanceEmbutido / 100;
+    const lanceTotal       = lanceEmbutidoVal + lanceLivre;
+
+    // ── Carta de crédito efetiva (após lance embutido) ────────────────────────
+    const cartaFinal = carta * (1 - lanceEmbutido / 100);
+
+    // ── Fase 2: parcela pós-contemplação ──────────────────────────────────────
+    const mesesPos = n - k;
+
+    // ── Saldo devedor — abatimento direto ─────────────────────────────────────
+    const saldoDevedor = Math.max(
+      parcelaAnteFull * n - parcelaAnteRed * k - lanceEmbutidoVal - lanceLivre, 0
+    );
+
+    const parcelaPosBase = saldoDevedor / mesesPos;
+    const parcelaPosTot  = parcelaPosBase + seguroPos;
+
+    // ── Totais ────────────────────────────────────────────────────────────────
+    const totalParcelas     = parcelaAnteRed * k + parcelaPosTot * mesesPos;
+    const totalAdmin        = carta * taxaAdmin    / 100;
+    const totalFundo        = carta * fundoReserva / 100;
+    const totalSeguros      = seguroPos * mesesPos;
+
+    // Desembolso total = parcelas + adesão + lance livre
+    // (lance embutido vem da própria carta, não é dinheiro extra)
+    const totalDesembolsado = totalParcelas + taxaAdesaoVal + lanceLivre;
+
+    // Custo efetivo = apenas as taxas do serviço (admin + fundo + adesão + seguros)
+    // Base do % = cartaFinal (independente do lance livre, pois o lance livre é
+    // apenas antecipação de pagamento — não altera o custo intrínseco do produto)
+    const custoEfetivo    = totalAdmin + totalFundo + taxaAdesaoVal + totalSeguros;
+    const custoEfetivoPct = (custoEfetivo / Math.max(cartaFinal, 1)) * 100;
+
+    // ── Saldo devedor no início do plano (parcelas + taxa de adesão) ────────
+    const saldoInicio = parcelaAnteFull * n + taxaAdesaoVal;
+
+    // ── Barra de composição (sobre parcela cheia) ─────────────────────────────
+    const pctAmort = (amortMensal / parcelaAnteFull) * 100;
+
+    // ── Projeção INCC — parcelas nominais ─────────────────────────────────────
+    // A cada 12 meses o índice acumulado dos 12 meses anteriores é aplicado.
+    // Simplificação: INCC médio uniforme; correção a cada 12 meses.
+    // Fator de correção do mês m: (1 + incc/100)^floor((m-1)/12)
+    let totalNominalPre = 0;
+    for (let m = 1; m <= k; m++) {
+      const corr = Math.pow(1 + incc / 100, Math.floor((m - 1) / 12));
+      totalNominalPre += parcelaAnteRed * corr;
+    }
+    let totalNominalPos = 0;
+    for (let m = k + 1; m <= n; m++) {
+      const corr = Math.pow(1 + incc / 100, Math.floor((m - 1) / 12));
+      totalNominalPos += parcelaPosTot * corr;
+    }
+    const totalDesembolsadoNominal = totalNominalPre + totalNominalPos + taxaAdesaoVal + lanceLivre;
+
+    // Parcela nominal no último mês de cada fase
+    const corrFinalPre      = Math.pow(1 + incc / 100, Math.floor((k - 1) / 12));
+    const corrFinalPos      = Math.pow(1 + incc / 100, Math.floor((n - 1) / 12));
+    const parcelaAnteNominal = parcelaAnteRed * corrFinalPre;
+    const parcalaPosNominal  = parcelaPosTot  * corrFinalPos;
+
+    return {
+      parcelaAnteRed, parcelaPosTot, parcelaPosBase,
+      parcelaAnteFull, amortMensal, adminMensal, fundoMensal,
+      totalDiferido, taxaAdesaoVal, lanceEmbutidoVal, lanceLivre, lanceTotal,
+      cartaFinal, saldoInicio, saldoDevedor, mesesPos,
+      totalParcelas, totalAdmin, totalFundo, totalSeguros,
+      totalDesembolsado, custoEfetivo, custoEfetivoPct,
+      pctAmort, seguroPos, k,
+      totalDesembolsadoNominal, parcelaAnteNominal, parcalaPosNominal, incc,
+      valorImovel, carta
+    };
+  }
+
+  // ── Validação ─────────────────────────────────────────────────────────────────
+
+  function showError(id, visible) {
+    document.getElementById(id).classList.toggle('visible', visible);
+  }
+
+  function validate() {
+    let ok = true;
+
+    const carta           = safeNum(document.getElementById('carta'));
+    const n               = parseInt(document.getElementById('meses').value, 10);
+    const k               = parseInt(document.getElementById('mesContemplacao').value, 10);
+    const taxaAdmin       = safeNum(document.getElementById('taxaAdmin'));
+    const fundoReserva    = safeNum(document.getElementById('fundoReserva'));
+    const taxaAdesao      = safeNum(document.getElementById('taxaAdesao'));
+    const lanceEmbutido   = safeNum(document.getElementById('lanceEmbutido'));
+    const reducaoParcela  = safeNum(document.getElementById('reducaoParcela'));
+    const lanceLivre      = safeNum(document.getElementById('lanceLivre'));
+    const seguroPos       = safeNum(document.getElementById('seguroPos'));
+    const incc            = safeNum(document.getElementById('inccEstimado'));
+
+    const cartaOk = isFinite(carta) && carta >= 10000;
+    showError('errCarta', !cartaOk);
+    if (!cartaOk) ok = false;
+
+    const mesesOk = isFinite(n) && n >= 12 && n <= 240;
+    showError('errMeses', !mesesOk);
+    if (!mesesOk) ok = false;
+
+    const contemplOk = isFinite(k) && k >= 1 && k <= n - 1;
+    showError('errContemplacao', !contemplOk);
+    if (!contemplOk) ok = false;
+
+    const adminOk = isFinite(taxaAdmin) && taxaAdmin >= 0 && taxaAdmin <= 25;
+    showError('errAdmin', !adminOk);
+    if (!adminOk) ok = false;
+
+    const fundoOk = isFinite(fundoReserva) && fundoReserva >= 0 && fundoReserva <= 10;
+    showError('errFundo', !fundoOk);
+    if (!fundoOk) ok = false;
+
+    const adesaoOk = isFinite(taxaAdesao) && taxaAdesao >= 0 && taxaAdesao <= 10;
+    showError('errAdesao', !adesaoOk);
+    if (!adesaoOk) ok = false;
+
+    const embutidoOk = isFinite(lanceEmbutido) && lanceEmbutido >= 0 && lanceEmbutido <= 50;
+    showError('errEmbutido', !embutidoOk);
+    if (!embutidoOk) ok = false;
+
+    const reducaoOk = isFinite(reducaoParcela) && reducaoParcela >= 0 && reducaoParcela <= 80;
+    showError('errReducao', !reducaoOk);
+    if (!reducaoOk) ok = false;
+
+    const lanceLivreOk = isFinite(lanceLivre) && lanceLivre >= 0;
+    showError('errLanceLivre', !lanceLivreOk);
+    if (!lanceLivreOk) ok = false;
+
+    const seguroOk = isFinite(seguroPos) && seguroPos >= 0 && seguroPos <= 10000;
+    showError('errSeguro', !seguroOk);
+    if (!seguroOk) ok = false;
+
+    const inccOk = isFinite(incc) && incc >= 0 && incc <= 30;
+    showError('errIncc', !inccOk);
+    if (!inccOk) ok = false;
+
+    if (!ok) return null;
+    return { carta, n, k, taxaAdmin, fundoReserva, taxaAdesao,
+             lanceEmbutido, reducaoParcela, lanceLivre, seguroPos, incc };
+  }
+
+  // ── Render ────────────────────────────────────────────────────────────────────
+
+  function render() {
+    const v           = validate();
+    const placeholder = document.getElementById('placeholder');
+    const results     = document.getElementById('results');
+
+    if (!v) {
+      placeholder.style.display = '';
+      results.style.display     = 'none';
+      return;
+    }
+
+    const r = calcConsorcio(v);
+
+    placeholder.style.display = 'none';
+    results.style.display     = 'block';
+
+    // ── Highlights ────────────────────────────────────────────────────────────
+    document.getElementById('parcelaAnte').textContent = fmt(r.parcelaAnteRed);
+    document.getElementById('parcelaPos').textContent  = fmt(r.parcelaPosTot);
+
+    // Detalhamento parcela pré (parcela reduzida)
+    const difMensal = r.parcelaAnteFull - r.parcelaAnteRed;
+    const detAnteArr = [
+      'Amort.: ' + fmt(r.amortMensal),
+      'Adm.: '   + fmt(r.adminMensal),
+      'Fundo: '  + fmt(r.fundoMensal)
+    ];
+    if (difMensal > 0.005) detAnteArr.push('diferido: ' + fmt(difMensal) + '/mês');
+    document.getElementById('detalheAnte').textContent = detAnteArr.join(' · ');
+
+    // Detalhamento parcela pós (contemplação)
+    const diferidoMes = r.mesesPos > 0 ? r.totalDiferido / r.mesesPos : 0;
+    const detPosArr   = ['Consórcio: ' + fmt(r.parcelaPosBase)];
+    if (diferidoMes > 0.005) detPosArr.push('diferido/mês: ' + fmt(diferidoMes));
+    if (r.seguroPos  > 0)    detPosArr.push('Seguro: ' + fmt(r.seguroPos));
+    document.getElementById('detalhePos').textContent = detPosArr.join(' · ');
+
+    // ── Barra de composição (sobre parcela cheia) ─────────────────────────────
+    document.getElementById('barFill').style.width = r.pctAmort.toFixed(1) + '%';
+    document.getElementById('barLabel').textContent =
+      fmtPct(r.pctAmort) + ' amort. / ' + fmtPct(100 - r.pctAmort) + ' encargos';
+
+    // ── Stats ─────────────────────────────────────────────────────────────────
+    document.getElementById('stCarta').textContent       = fmt(r.valorImovel);
+    document.getElementById('stCartaBruta').textContent  = fmt(r.carta);
+    document.getElementById('stSaldoInicio').textContent = fmt(r.saldoInicio);
+    document.getElementById('stCartaFinal').textContent  = fmt(r.cartaFinal);
+    document.getElementById('stSaldo').textContent       = fmt(r.saldoDevedor);
+    document.getElementById('stMeses').textContent       = v.n + ' meses';
+    document.getElementById('stLanceEmb').textContent    = fmt(r.lanceEmbutidoVal) +
+      ' (' + fmtPct(v.lanceEmbutido) + ' da carta bruta)';
+    document.getElementById('stLanceLivre').textContent = fmt(r.lanceLivre);
+    document.getElementById('stLanceTotal').textContent = fmt(r.lanceTotal);
+    document.getElementById('stTaxaAdmin').textContent  = fmt(r.totalAdmin) +
+      ' (' + fmtPct(v.taxaAdmin) + ')';
+    document.getElementById('stFundo').textContent      = fmt(r.totalFundo) +
+      ' (' + fmtPct(v.fundoReserva) + ')';
+    document.getElementById('stAdesao').textContent     = fmt(r.taxaAdesaoVal) +
+      ' (' + fmtPct(v.taxaAdesao) + ')';
+    document.getElementById('stSeguros').textContent    = fmt(r.totalSeguros);
+    document.getElementById('stTotal').textContent      = fmt(r.totalDesembolsado);
+    document.getElementById('stCusto').textContent      = fmtPct(r.custoEfetivoPct, 2) +
+      ' (' + fmt(r.custoEfetivo) + ')';
+
+    // ── INCC nominal ──────────────────────────────────────────────────────────
+    document.getElementById('stInccRate').textContent       = fmtPct(r.incc, 2) + ' a.a.';
+    document.getElementById('stParcelaAnteNom').textContent = fmt(r.parcelaAnteNominal);
+    document.getElementById('stParcalaPosNom').textContent  = fmt(r.parcalaPosNominal);
+    document.getElementById('stTotalNom').textContent       = fmt(r.totalDesembolsadoNominal);
+
+    // ── Badge ─────────────────────────────────────────────────────────────────
+    document.getElementById('badgeInfo').textContent =
+      'Contemplação no mês ' + v.k + ' · Lance total: ' + fmt(r.lanceTotal);
+
+    // ── Nota informativa ──────────────────────────────────────────────────────
+    const totalDiferido = r.totalDiferido;
+    document.getElementById('infoNote').innerHTML =
+      '<strong>Como ler os resultados:</strong> ' +
+      'Meses 1 a ' + v.k + ': você paga a parcela reduzida de ' + fmt(r.parcelaAnteRed) +
+      ' (parcela cheia seria ' + fmt(r.parcelaAnteFull) + '). ' +
+      (totalDiferido > 0.005
+        ? 'O valor diferido acumulado de <strong>' + fmt(totalDiferido) + '</strong> é redistribuído ' +
+          'nos ' + r.mesesPos + ' meses restantes. '
+        : '') +
+      'A partir do mês ' + (v.k + 1) + ' (pós-contemplação), a parcela passa a ser ' +
+      fmt(r.parcelaPosTot) + '. ' +
+      'O saldo devedor de ' + fmt(r.saldoDevedor) + ' representa o total ainda a pagar ' +
+      'ao consórcio (excluindo seguro). O lance livre de ' + fmt(r.lanceLivre) +
+      ' foi descontado do saldo bruto como adiantamento de parcelas.';
+  }
+
+  // ── Sincronização slider ↔ input ──────────────────────────────────────────────
+
+  const mesesSlider  = document.getElementById('mesesSlider');
+  const mesesInput   = document.getElementById('meses');
+  const mesesDisplay = document.getElementById('mesesDisplay');
+
+  function clampContemplacao(maxVal) {
+    const el = document.getElementById('mesContemplacao');
+    const cur = parseInt(el.value, 10);
+    if (isFinite(cur) && cur >= maxVal) {
+      el.value = Math.max(1, maxVal - 1);
+    }
+    el.max = Math.max(1, maxVal - 1);
+  }
+
+  // Preenche automaticamente o INCC estimado com a média dos últimos N anos
+  // equivalentes ao prazo, a não ser que o usuário já tenha alterado o campo.
+  function autoFillIncc(n) {
+    const el = document.getElementById('inccEstimado');
+    if (el.dataset.auto !== 'true') return;
+    const anos = Math.max(1, Math.round(n / 12));
+    el.value = inccMedio(anos).toFixed(2);
+  }
+
+  mesesSlider.addEventListener('input', () => {
+    const n = parseInt(mesesSlider.value, 10);
+    mesesInput.value         = n;
+    mesesDisplay.textContent = n + ' meses';
+    clampContemplacao(n);
+    render();
+  });
+  mesesInput.addEventListener('input', () => {
+    const v = parseInt(mesesInput.value, 10);
+    if (v >= 12 && v <= 240) {
+      mesesSlider.value        = v;
+      mesesDisplay.textContent = v + ' meses';
+      clampContemplacao(v);
+    }
+    render();
+  });
+
+  // ── Listeners nos demais campos ───────────────────────────────────────────────
+  ['carta', 'lanceLivre', 'seguroPos'].forEach(id => {
+    document.getElementById(id).addEventListener('input', function () {
+      const formatted = fmtInput(this.value);
+      this.value = formatted;
+      this.setSelectionRange(formatted.length, formatted.length);
+      render();
+    });
+  });
+
+  ['mesContemplacao','taxaAdmin','fundoReserva','taxaAdesao',
+   'lanceEmbutido','reducaoParcela']
+    .forEach(id => document.getElementById(id).addEventListener('input', render));
+
+  document.getElementById('inccEstimado').addEventListener('input', render);
+
+  // ── Cálculo inicial ───────────────────────────────────────────────────────────
+  render();
+</script>
+
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'unsafe-inline';">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'unsafe-inline'; img-src 'self' data:;">
   <title>Comparativo: Financiamento vs. Consórcio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -52,10 +52,15 @@
       top: 0;
       z-index: 100;
       box-shadow: none;
+      display: flex;
+      align-items: center;
+      gap: 20px;
     }
+    .header-logo { flex-shrink: 0; height: 37px; width: auto; opacity: 0.90; }
+    .header-logo-print { display: none; }
     .header-inner {
+      flex: 1;
       max-width: 1200px;
-      margin: 0 auto;
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
@@ -415,11 +420,106 @@
       border-top: 1px solid var(--gray-100);
       margin: 12px 0;
     }
+
+    /* ── Logo de impressão ── */
+    .header-logo-print { display: none; }
+
+    /* ── Botão PDF ── */
+    .btn-pdf {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 22px;
+      background: #1A1F3A; color: #fff;
+      border: none; border-radius: 4px;
+      font-size: 0.875rem; font-weight: 600; cursor: pointer;
+      font-family: inherit; transition: opacity .15s;
+    }
+    .btn-pdf:hover { opacity: .85; }
+    .btn-pdf-wrap { text-align: center; margin-top: 24px; }
+
+    /* ── Rodapé de contato (só na impressão) ── */
+    .print-contact { display: none; }
+    .print-contact-title { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #9ca3af; margin-bottom: 4px; }
+    .print-contact-name { font-size: 0.85rem; font-weight: 700; color: #111827; }
+    .print-contact-role { font-size: 0.72rem; color: #4b5563; margin-top: 1px; }
+    .print-contact-items { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 5px; }
+    .print-contact-item { font-size: 0.72rem; color: #374151; }
+    .print-contact-item span { font-weight: 600; color: #111827; }
+    .print-disclaimer { font-size: 0.60rem; color: #9ca3af; margin-top: 6px; line-height: 1.4; }
+
+    /* ── Impressão ── */
+    @media print {
+      @page { size: A4; margin: 8mm 10mm; }
+      body { background: #fff !important; font-size: 11px !important; }
+      header {
+        position: static !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+        padding: 8px 0 10px !important;
+        margin-bottom: 10px !important;
+        border-bottom: 2px solid #1A1F3A !important;
+        gap: 5px !important;
+      }
+      .header-logo { display: none !important; }
+      .header-logo-print { display: block !important; height: 24px !important; width: auto !important; }
+      .header-inner {
+        display: flex !important; flex-direction: column !important;
+        align-items: center !important; width: 100% !important;
+        max-width: none !important; gap: 2px !important;
+      }
+      .header-titles { text-align: center !important; }
+      .header-titles h1 { font-size: 0.95rem !important; color: #fff !important; }
+      .header-titles p  { font-size: 0.72rem !important; color: rgba(255,255,255,0.70) !important; }
+      .header-nav { display: none !important; }
+      .layout { padding: 0 !important; gap: 8px !important; }
+      .compare-card { border: none !important; box-shadow: none !important; padding: 0 !important; }
+      #cmpPlaceholder { display: none !important; }
+      .btn-pdf { display: none !important; }
+      .forms-row {
+        display: grid !important; grid-template-columns: 1fr 1fr !important;
+        gap: 8px !important; break-inside: avoid;
+      }
+      .card { padding: 7px 10px !important; box-shadow: none !important; border: 1px solid #D7DBDF !important; }
+      .card-title { font-size: 0.78rem !important; margin-bottom: 6px !important; }
+      .form-group { margin-bottom: 4px !important; }
+      .form-group label { font-size: 0.68rem !important; margin-bottom: 2px !important; }
+      input[type="number"], input[type="text"] {
+        padding: 2px 6px !important; font-size: 0.72rem !important;
+        border: 1px solid #D7DBDF !important; background: #fff !important;
+        -webkit-print-color-adjust: exact;
+      }
+      .details-body { display: block !important; }
+      .details-toggle { display: none !important; }
+      .divider { display: none !important; }
+      input[type="range"] { display: none !important; }
+      .slider-row { display: flex !important; justify-content: flex-end !important; }
+      .toggle-group { display: none !important; }
+      .sync-note { display: none !important; }
+      .hint { display: none !important; }
+      .grid-2 { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 4px !important; }
+      #cmpResults { display: block !important; }
+      .cmp-row { break-inside: avoid; padding-top: 4px !important; padding-bottom: 4px !important; }
+      .cmp-label { font-size: 0.72rem !important; }
+      .cmp-val  { font-size: 0.82rem !important; }
+      .verdict-card { break-inside: avoid; border: 1px solid #D7DBDF !important; padding: 8px 10px !important; margin-top: 6px !important; }
+      .verdict-title { font-size: 0.85rem !important; margin-bottom: 4px !important; }
+      #verdictBody { font-size: 0.72rem !important; line-height: 1.4 !important; }
+      .economy-banner { break-inside: avoid; -webkit-print-color-adjust: exact; print-color-adjust: exact; padding: 6px 10px !important; margin-top: 6px !important; font-size: 0.78rem !important; }
+      .btn-pdf-wrap { display: none !important; }
+      .print-contact {
+        display: block !important;
+        margin-top: 12px; padding-top: 8px;
+        border-top: 1px solid #D7DBDF;
+        break-inside: avoid;
+      }
+    }
   </style>
 </head>
 <body>
 
 <header>
+  <img src="Logo_Unifique-Necton.png" alt="Unifique Invest | Necton" class="header-logo">
+  <img src="Logo_Unifique-Necton_cores.png" alt="Unifique Invest | Necton" class="header-logo-print">
   <div class="header-inner">
     <div class="header-titles">
       <h1>Comparativo: Financiamento vs. Consórcio</h1>
@@ -764,9 +864,28 @@
         <div id="verdictBody" style="font-size:0.875rem;color:var(--gray-700);line-height:1.6"></div>
       </div>
     </div><!-- /cmpResults -->
+
+      <div class="btn-pdf-wrap">
+        <button class="btn-pdf" onclick="window.print()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Exportar PDF
+        </button>
+      </div>
   </div><!-- /compare-card -->
 
 </main>
+
+<div class="print-contact" style="max-width:960px;margin:0 auto;padding:0 24px">
+  <div class="print-contact-title">Assessor responsável pela simulação</div>
+  <div class="print-contact-name">Davi Cesar Mendes Leal</div>
+  <div class="print-contact-role">Assessor de Investimentos · Unifique Invest | BTG Pactual</div>
+  <div class="print-contact-items">
+    <div class="print-contact-item">📱 <span>WhatsApp:</span> +55 11 9 4995-9499</div>
+    <div class="print-contact-item">✉️ <span>E-mail:</span> davi.ml@unifiqueinvest.com.br</div>
+    <div class="print-contact-item">🔗 <span>LinkedIn:</span> linkedin.com/in/davileal</div>
+  </div>
+  <div class="print-disclaimer">Esta simulação tem caráter exclusivamente educacional e informativo. Os valores apresentados são estimativas baseadas nos parâmetros informados e não constituem oferta, proposta ou assessoria de investimentos. Consulte sempre um profissional habilitado antes de tomar decisões financeiras.</div>
+</div>
 
 <script>
   // ─── TR histórica (BACEN) ────────────────────────────────────────────────
